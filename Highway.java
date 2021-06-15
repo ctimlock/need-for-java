@@ -9,9 +9,9 @@ public class Highway
         height = 1;
         length = 1;
         tiles = new RoadTile[length][height];
-        for (int x = 0; x < length; x++) 
+        for (int y = 0; y < height; y++) 
         {
-            for (int y = 0; y < height; y++) 
+            for (int x = 0; x < length; x++) 
             {
                 tiles[x][y] = new RoadTile();
             }
