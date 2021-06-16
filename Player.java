@@ -27,7 +27,7 @@ public class Player
 
     public void burnFuel(int burnedFuel)
     {
-        fuel =- burnedFuel;
+        this.fuel -= burnedFuel;
     }
     
     /**
