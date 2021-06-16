@@ -8,7 +8,7 @@ After you have read this information, head over to the Assessment 2 Q&A discussi
 
 ## Assessment overview
 
-This assessment is a mandatory submission, which means that in order to pass this unit of study, you must submit this assessment. This is an individual assessment task and must be your own original work. You must attribute the source of any part of your code that you have not written yourself. Please note the section on plagiarism in this document. 
+This assessment is a mandatory submission, which means that in order to pass this unit of study, you must submit this assessment. This is an individual assessment task and must be your own original work. You must attribute the source of any part of your code that you have not written yourself. Please note the section on plagiarism in this document.
 
 This assessment task will require you to write a program to play the game 'Need for Java'. You will be supplied with a series of specifications that your program will need to meet.
 
