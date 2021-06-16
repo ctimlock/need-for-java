@@ -13,6 +13,15 @@ public class Game
         highway = new Highway(45, 3);
     }
 
+    public void boost()
+    {
+        for (int i = 0; i < this.player.getVehicle().getBoostSpeed(); i++) 
+        {
+            this.movePlayerForward();
+        }
+        this.player.burnFuel((this.player.getVehicle().getBoostSpeed() * 2));
+    }
+
     /**
      * Method which adds a set number of obstacles to an exisiting highway. The first three highway sections will not have obstacles placed.
      * @param obstacleNumber The number of obstacles to be added
@@ -75,7 +84,6 @@ public class Game
         Game game = new Game();
         game.setDifficulty(2);
         game.renderHighway();
-        System.out.println(game.player.getVehicle().getTankSize());
     }
 
     /**
