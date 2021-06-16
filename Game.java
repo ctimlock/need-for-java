@@ -1,5 +1,4 @@
-
-public class Game 
+public class Game
 {
     private Player player;
     private Highway highway;
@@ -11,7 +10,56 @@ public class Game
     public Game()
     {
         player = new Player();
-        highway = new Highway(12, 3);
+        highway = new Highway(45, 3);
+    }
+
+    /**
+     * Method which adds a set number of obstacles to an exisiting highway. The first three highway sections will not have obstacles placed.
+     * @param obstacleNumber The number of obstacles to be added
+     */
+    public void generateObstacles(int obstacleNumber)
+    {
+        for (int i = 0; i < obstacleNumber; i++) 
+        {
+            boolean success = false;
+            while(!success)
+            {
+                int randomX = (int)(Math.random() * (this.highway.getLength() - 3) + 3);
+                int randomY = (int)(Math.random() * this.highway.getHeight());
+
+                //Checks whether tile is already an obstacle.
+                if (this.highway.getSpecificTile(randomX, randomY).getTileType().equals("Road"))
+                {
+                    int selection = (int)(Math.random() * 10);
+                    String newTileType = "";
+                    switch (selection) 
+                    {
+                        case 0:
+                        case 1:
+                        case 2:
+                            newTileType = "Fuel";
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                            newTileType = "Roadblock";
+                            break;
+                        case 7:
+                        case 8:
+                            newTileType = "Tyre Spikes";
+                            break;
+
+                        case 9:
+                            newTileType = "Manhole";
+                            break;
+                    }
+                    this.highway.getSpecificTile(randomX, randomY).setTileToObstacle(newTileType);
+                    success = true;
+                }
+            }
+            //int typeSelection = (int)(Math.random() * 10);
+        }
     }
 
     /**
@@ -25,42 +73,10 @@ public class Game
 
     public static void main(String[] args) 
     {
-        //Game game = new Game();
-    }
-
-
-    /**
-     * Method that moves the player up or down by a lane, and forward by one position.
-     * @param upOrDown The direction for the lane change, passed in as a String of either "up" or "down"
-     */
-    public void swerve(String upOrDown)
-    {
-        int upDownInt = 0;
-        switch (upOrDown.toLowerCase())
-        {
-            case "up":
-                upDownInt = -1;
-                break;
-
-            case "down":
-                upDownInt = 1;
-                break;
-        
-            default:
-                break;
-        }
-
-        int newLane = player.getLane() + upDownInt;
-
-        if (newLane < this.highway.getHeight() && newLane >= 0) 
-        {
-            player.setLane(newLane);
-        } 
-        else 
-        {
-            System.out.println("Error: illegal move detected. Moving player forwards instead.");
-        }
-        this.movePlayerForward();
+        Game game = new Game();
+        int obstacleNumber = 45;
+        game.generateObstacles(obstacleNumber);
+        game.renderHighway();
     }
 
     /**
@@ -115,5 +131,39 @@ public class Game
     public void setPlayer(Player player) 
     {
         this.player = player;
+    }
+
+    /**
+     * Method that moves the player up or down by a lane, and forward by one position.
+     * @param upOrDown The direction for the lane change, passed in as a String of either "up" or "down"
+     */
+    public void swerve(String upOrDown)
+    {
+        int upDownInt = 0;
+        switch (upOrDown.toLowerCase())
+        {
+            case "up":
+                upDownInt = -1;
+                break;
+
+            case "down":
+                upDownInt = 1;
+                break;
+        
+            default:
+                break;
+        }
+
+        int newLane = player.getLane() + upDownInt;
+
+        if (newLane < this.highway.getHeight() && newLane >= 0) 
+        {
+            player.setLane(newLane);
+        } 
+        else 
+        {
+            System.out.println("Error: illegal move detected. Moving player forwards instead.");
+        }
+        this.movePlayerForward();
     }
 }
