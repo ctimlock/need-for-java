@@ -11,9 +11,17 @@ public class RoadTile
     public RoadTile()
     {
         tileType = "Road";
-        icon = "x";
+        icon = " ";
         healthMod = 0;
         fuelMod = 0;
+    }
+
+    public RoadTile(String tileType, String icon, int healthMod, int fuelMod)
+    {
+        this.tileType = tileType;
+        this.icon = icon;
+        this.healthMod = healthMod;
+        this.fuelMod = fuelMod;
     }
 
     /**
@@ -72,12 +80,57 @@ public class RoadTile
         this.icon = icon;
     }
 
+    public void setTileToObstacle(String newTileType)
+    {
+        String newIcon = "";
+        int newHealthMod = 0;
+        int newFuelMod = 0;
+
+        switch (newTileType)
+        {
+            case "Road":
+                newIcon = " ";
+                newHealthMod = 0;
+                newFuelMod = 0;
+                break;
+
+            case "Fuel":
+                newIcon = "F";
+                newHealthMod = 0;
+                newFuelMod = 10;
+                break;
+                
+            case "Roadblock":
+                newIcon = "B";
+                newHealthMod = -20;
+                newFuelMod = 0;
+                break;
+            
+            case "Tyre Spikes":
+                newIcon = "S";
+                newHealthMod = -45;
+                newFuelMod = 0;
+                break;
+                
+            case "Manhole":
+                newIcon = "O";
+                newHealthMod = -60;
+                newFuelMod = 0;
+                break;
+        }
+
+        this.tileType = newTileType;
+        this.icon = newIcon;
+        this.healthMod = newHealthMod;
+        this.fuelMod = newFuelMod;
+    }
+
     /**
      * @param tileType the tileType to set
      */
     public void setTileType(String tileType) 
     {
         this.tileType = tileType;
-    }
+    }    
     
 }
