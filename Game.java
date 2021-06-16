@@ -19,7 +19,14 @@ public class Game
         {
             this.movePlayerForward();
         }
-        this.player.burnFuel((this.player.getVehicle().getBoostSpeed() * 2));
+        this.player.changeFuel((this.player.getVehicle().getBoostSpeed() * 2));
+    }
+
+    public void calculateEffect()
+    {
+        RoadTile currentTile = this.highway.getSpecificTile(this.player.getPosition(), this.player.getLane());
+        this.player.changeFuel(currentTile.getFuelMod());
+        this.player.changeDamage(currentTile.getHealthMod());
     }
 
     /**
@@ -83,7 +90,6 @@ public class Game
     {
         Game game = new Game();
         game.setDifficulty(2);
-        game.renderHighway();
     }
 
     /**
@@ -93,7 +99,8 @@ public class Game
     {
         int newPosition = player.getPosition() + 1;
         player.setPosition(newPosition);
-        player.burnFuel(1);
+        player.changeFuel(-1);
+        calculateEffect();
     }
 
     /**
@@ -224,7 +231,7 @@ public class Game
         if (newLane < this.highway.getHeight() && newLane >= 0) 
         {
             player.setLane(newLane);
-            player.burnFuel(1);
+            player.changeFuel(-1);
         } 
         else 
         {
