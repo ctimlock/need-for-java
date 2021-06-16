@@ -2,7 +2,7 @@ public class Game
 {
     private Player player;
     private Highway highway;
-    private final int RENDER_DISTANCE = 10;
+    private final int RENDER_DISTANCE = 45;
 
     /**
      * Default constructor that creates an object of the class Game.
@@ -58,7 +58,6 @@ public class Game
                     success = true;
                 }
             }
-            //int typeSelection = (int)(Math.random() * 10);
         }
     }
 
@@ -74,10 +73,9 @@ public class Game
     public static void main(String[] args) 
     {
         Game game = new Game();
-        game.player.setFuel(100);
-        int obstacleNumber = 45;
-        game.generateObstacles(obstacleNumber);
+        game.setDifficulty(2);
         game.renderHighway();
+        System.out.println(game.player.getVehicle().getTankSize());
     }
 
     /**
@@ -124,6 +122,63 @@ public class Game
 
         // Inserts the lower border of the highway.
         System.out.println(this.highway.getLaneMarkers(renderLength, '='));
+    }
+
+    public void setDifficulty(int difficulty)
+    {
+        int lengthMin = 0;
+        int lengthMax = 0;
+        double fuelLimiter = 0.0;
+        int obstacles = 0;
+
+        switch (difficulty) 
+        {
+            case 1:
+                lengthMin = 10;
+                lengthMax = 15;
+                fuelLimiter = 1.0;
+                obstacles = 12;
+                break;
+
+            case 2:
+                lengthMin = 15;
+                lengthMax = 30;
+                fuelLimiter = 0.8;
+                obstacles = 24;
+                break;
+
+            case 3:
+                lengthMin = 30;
+                lengthMax = 50;
+                fuelLimiter = 0.5;
+                obstacles = 45;
+                break;
+        
+            default:
+                lengthMin = 10;
+                lengthMax = 15;
+                fuelLimiter = 1.0;
+                obstacles = 12;
+                break;
+        }
+
+        // Reinitialise the highway with new length.
+        int length = (int) (Math.random() * (lengthMax - lengthMin) + lengthMin);
+        Highway highway = new Highway(length, 3);
+        this.setHighway(highway);
+
+        this.generateObstacles(obstacles);
+
+        int tankSize = (int)(this.player.getVehicle().getTankSize() * fuelLimiter);
+        this.player.getVehicle().setTankSize(tankSize);
+    }
+
+    /**
+     * @param highway the highway to set
+     */
+    public void setHighway(Highway highway) 
+    {
+        this.highway = highway;
     }
     
     /**
