@@ -19,8 +19,13 @@ public class Vehicle
         hitPoints = 50;
     }
     
+
     /**
      * Non-default constructor that creates an object of the class Vehicle.
+     * @param type
+     * @param boostSpeed
+     * @param tankSize
+     * @param hitPoints
      */
     public Vehicle(String type, int boostSpeed, int tankSize, int hitPoints)
     {
@@ -48,6 +53,7 @@ public class Vehicle
         return hitPoints;
     }
 
+
     /**
      * Accessor method to retrieve the tank size of the vehicle object.
      * @return The tank size, as an integer.
@@ -70,7 +76,8 @@ public class Vehicle
      * Mutator method to set the boost speed of the vehicle object.
      * @param boostSpeed The boostSpeed to set.
      */
-    public void setBoostSpeed(int boostSpeed) {
+    public void setBoostSpeed(int boostSpeed) 
+    {
         this.boostSpeed = boostSpeed;
     }
 
@@ -78,7 +85,8 @@ public class Vehicle
      * Mutator method to set the hit points of the vehicle object.
      * @param hitPoints The hitPoints to set.
      */
-    public void setHitPoints(int hitPoints) {
+    public void setHitPoints(int hitPoints) 
+    {
         this.hitPoints = hitPoints;
     }
 
@@ -86,7 +94,8 @@ public class Vehicle
      * Mutator method to set the tank size of the vehicle object.
      * @param tankSize The tankSize to set.
      */
-    public void setTankSize(int tankSize) {
+    public void setTankSize(int tankSize) 
+    {
         this.tankSize = tankSize;
     }
 
@@ -94,7 +103,8 @@ public class Vehicle
      * Mutator method to set the type of the vehicle object.
      * @param type The type to set.
      */
-    public void setType(String type) {
+    public void setType(String type) 
+    {
         this.type = type;
     }
 }
