@@ -25,9 +25,14 @@ public class Player
         this.fuel = fuel;
     }
 
-    public void burnFuel(int burnedFuel)
+    public void changeFuel(int fuel)
     {
-        this.fuel -= burnedFuel;
+        this.fuel += fuel;
+    }
+
+    public void changeDamage(int damage)
+    {
+        this.damage += damage;
     }
     
     /**
