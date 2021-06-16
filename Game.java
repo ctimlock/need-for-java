@@ -74,6 +74,7 @@ public class Game
     public static void main(String[] args) 
     {
         Game game = new Game();
+        game.player.setFuel(100);
         int obstacleNumber = 45;
         game.generateObstacles(obstacleNumber);
         game.renderHighway();
@@ -86,6 +87,7 @@ public class Game
     {
         int newPosition = player.getPosition() + 1;
         player.setPosition(newPosition);
+        player.burnFuel(1);
     }
 
     /**
@@ -159,6 +161,7 @@ public class Game
         if (newLane < this.highway.getHeight() && newLane >= 0) 
         {
             player.setLane(newLane);
+            player.burnFuel(1);
         } 
         else 
         {

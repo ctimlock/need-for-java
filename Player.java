@@ -15,6 +15,20 @@ public class Player
         damage = 0;
         fuel = 0;
     }
+
+    public Player(Vehicle vehicle, int position, int lane, int damage, int fuel)
+    {
+        this.vehicle = vehicle;
+        this.position = position;
+        this.lane = lane;
+        this.damage = damage;
+        this.fuel = fuel;
+    }
+
+    public void burnFuel(int burnedFuel)
+    {
+        fuel =- burnedFuel;
+    }
     
     /**
      * Accessor method to retrieve the current damage of the player.
