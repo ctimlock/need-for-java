@@ -86,7 +86,12 @@ public class Player
         this.position += horizontal;
         this.lane += vertical;
     }
-    
+
+    public Boolean hasDied()
+    {
+        return (this.fuel == 0 || this.damage >= this.vehicle.getTankSize());
+    }
+
     /**
      * Mutator method that sets the current damage of the player.
      * @param damage The damage to set, as an integer.

@@ -10,7 +10,7 @@ public class Game
     public Game()
     {
         player = new Player();
-        highway = new Highway(45, 3);
+        highway = new Highway();
     }
 
     public void boost()
@@ -20,8 +20,8 @@ public class Game
         {
             this.player.movePlayer(1, 0);
         }
-        this.player.changeFuel(x * 3);
-        this.calculateEffect();
+        this.player.changeFuel(-x * 3);
+        this.endTurn();
     }
 
     public void calculateEffect()
@@ -29,6 +29,32 @@ public class Game
         RoadTile currentTile = this.highway.getSpecificTile(this.player.getPosition(), this.player.getLane());
         this.player.changeFuel(currentTile.getFuelMod());
         this.player.changeDamage(currentTile.getHealthMod());
+    }
+
+    public void checkLose()
+    {
+        if(this.player.hasDied())
+        {
+            System.out.println("Sucked in idiot! You lose.");
+            // TODO: death actions
+        }
+    }
+
+
+    public void checkWin()
+    {
+        if (this.player.getPosition() == this.highway.getLength())
+        {
+            System.out.println("Congratulations! You win.");
+            // TODO: Add more stuff.
+        }
+    }
+
+    public void endTurn()
+    {
+        this.checkWin();
+        this.checkLose();
+        this.calculateEffect();
     }
 
     /**
@@ -53,7 +79,7 @@ public class Game
     {
         this.player.movePlayer(1, 0);
         this.player.changeFuel(-1);
-        this.calculateEffect();
+        this.endTurn();
     }
 
     /**
@@ -179,6 +205,6 @@ public class Game
                 break;
         }
 
-        calculateEffect();
+        this.endTurn();
     }
 }
