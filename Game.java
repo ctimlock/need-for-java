@@ -21,12 +21,12 @@ public class Game
             this.player.movePlayer(1, 0);
         }
         this.player.changeFuel(-x * 3);
-        this.endTurn();
     }
 
     public void calculateEffect()
     {
-        RoadTile currentTile = this.highway.getSpecificTile(this.player.getPosition(), this.player.getLane());
+        int[] location = this.player.getLocation();
+        RoadTile currentTile = this.highway.getSpecificTile(location[0], location[1]);
         this.player.changeFuel(currentTile.getFuelMod());
         this.player.changeDamage(currentTile.getDamage());
     }
@@ -54,6 +54,7 @@ public class Game
         this.checkWin();
         this.checkLose();
         this.calculateEffect();
+        this.setCurrentFlavourText();
     }
 
     /**
@@ -90,7 +91,6 @@ public class Game
     {
         this.player.movePlayer(1, 0);
         this.player.changeFuel(-1);
-        this.endTurn();
     }
 
     public void nukeConsole(int lines)
@@ -190,6 +190,38 @@ public class Game
         this.player.changeFuel(9999);
     }
 
+    public void setCurrentFlavourText()
+    {
+        int[] location = this.player.getLocation();
+        RoadTile currentTile = this.highway.getSpecificTile(location[0], location[1]);
+        String output = "";
+
+        switch (currentTile.getTileType()) 
+        {
+            
+            case "Road":
+                output = "";
+                break;
+
+            case "Fuel":
+                output = "You picked up " + currentTile.getFuelMod() + " fuel.";
+                break;
+                
+            case "Roadblock":
+                output = "Careful, you hit a roadblock. You took " + currentTile.getDamage() + " damage.";
+                break;
+            
+            case "Tyre Spikes":
+                output = "Ouch, you ran over some tyre spikes. You took " + currentTile.getDamage() + " damage.";
+                break;
+                
+            case "Manhole":
+                output = "OOFT, you hit an open manhole! You took " + currentTile.getDamage() + " damage!";
+                break;
+        }
+        this.player.setFlavourText(output);
+    }
+
     /**
      * @param highway the highway to set
      */
@@ -225,8 +257,6 @@ public class Game
                     this.player.changeFuel(-2);
                 break;
         }
-
-        this.endTurn();
     }
 
     public void takeTurn()
@@ -236,8 +266,11 @@ public class Game
 
         // Render the highway and player status.
         this.renderHighway();
-        System.out.println("");
+        this.nukeConsole(1);
+        System.out.println(this.player.getFlavourText());
+        this.nukeConsole(1);
         System.out.println(this.player.getStatus());
+        this.nukeConsole(1);
 
         boolean canSwerveUp = (this.player.getLane() == 0 ? false : true);
         boolean canSwerveDown = (this.player.getLane() == this.highway.getHeight() - 1 ? false : true);
@@ -266,6 +299,8 @@ public class Game
             System.out.println(moveForwardMessage);
             System.out.println(boostMessage);
         }
+
+        this.nukeConsole(1);
         
         // Request player choice and check it's valid.
         Input input = new Input();

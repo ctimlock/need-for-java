@@ -6,6 +6,7 @@ public class Player
     private int lane;
     private int damage;
     private int fuel;
+    private String flavourText;
 
     public Player()
     {
@@ -14,15 +15,17 @@ public class Player
         lane = 0;
         damage = 0;
         fuel = 0;
+        flavourText = "";
     }
 
-    public Player(Vehicle vehicle, int position, int lane, int damage, int fuel)
+    public Player(Vehicle vehicle, int position, int lane, int damage, int fuel, String flavourText)
     {
         this.vehicle = vehicle;
         this.position = position;
         this.lane = lane;
         this.damage = damage;
         this.fuel = fuel;
+        this.flavourText = flavourText;
     }
 
     public void changeFuel(int fuelChange)
@@ -45,6 +48,14 @@ public class Player
     }
 
     /**
+     * @return the flavourText
+     */
+    public String getFlavourText() 
+    {
+        return flavourText;
+    }
+
+    /**
      * Accessor method to retrieve the fuel level of the player.
      * @return The fuel, returned as an integer.
      */
@@ -62,6 +73,13 @@ public class Player
     {
         return lane;
     }
+    
+
+    public int[] getLocation()
+    {
+        int[] location = {this.position, this.lane};
+        return location;
+    } 
 
     /**
      * Accessor method to retrieve the position of the player.
@@ -104,6 +122,14 @@ public class Player
     public void setDamage(int damage) 
     {
         this.damage = damage;
+    }
+
+    /**
+     * @param flavourText the flavourText to set
+     */
+    public void setFlavourText(String flavourText) 
+    {
+        this.flavourText = flavourText;
     }
 
     /**
