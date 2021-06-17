@@ -86,15 +86,15 @@ public class Player
         return vehicle;
     }
 
+    public Boolean hasDied()
+    {
+        return (this.fuel <= 0 || this.damage >= this.vehicle.getHitPoints());
+    }
+
     public void movePlayer(int horizontal, int vertical)
     {
         this.position += horizontal;
         this.lane += vertical;
-    }
-
-    public Boolean hasDied()
-    {
-        return (this.fuel <= 0 || this.damage >= this.vehicle.getTankSize());
     }
 
     /**

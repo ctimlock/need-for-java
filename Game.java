@@ -28,7 +28,7 @@ public class Game
     {
         RoadTile currentTile = this.highway.getSpecificTile(this.player.getPosition(), this.player.getLane());
         this.player.changeFuel(currentTile.getFuelMod());
-        this.player.changeDamage(currentTile.getHealthMod());
+        this.player.changeDamage(currentTile.getDamage());
     }
 
     public void checkLose()
@@ -91,6 +91,14 @@ public class Game
         this.player.movePlayer(1, 0);
         this.player.changeFuel(-1);
         this.endTurn();
+    }
+
+    public void nukeConsole(int lines)
+    {
+        for (int i = 0; i < lines; i++) 
+        {
+            System.out.println("");
+        }
     }
 
     /**
@@ -224,10 +232,7 @@ public class Game
     public void takeTurn()
     {
         // Nuke the existing graphics.
-        for (int i = 0; i < 25; i++) 
-        {
-            System.out.println("");
-        }
+        this.nukeConsole(25);
 
         // Render the highway and player status.
         this.renderHighway();
