@@ -72,6 +72,11 @@ public class Player
         return position;
     }
 
+    public String getStatus()
+    {
+        return "Distance: " + position + "     Damage: " + damage + "/" + this.vehicle.getHitPoints() + "     Fuel: " + fuel + "/" + this.vehicle.getTankSize();
+    }
+
     /**
      * Accessor method to retrieve the player's vehicle.
      * @return The player's vehicle, as an object of the class Vehicle.
@@ -89,7 +94,7 @@ public class Player
 
     public Boolean hasDied()
     {
-        return (this.fuel == 0 || this.damage >= this.vehicle.getTankSize());
+        return (this.fuel <= 0 || this.damage >= this.vehicle.getTankSize());
     }
 
     /**

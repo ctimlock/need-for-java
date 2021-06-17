@@ -21,46 +21,38 @@ public class Input
 
     /**
      * Method to request and pass back a user input as a character.
-     * @param message Message to display prior to input, as a String.
      * @param index The index of the character to return from a user's entered String, as an integer.
      * @return Returns the specified character from a user's entered string as a character.
      */
-    public char acceptCharInput(String message, int index)
+    public char acceptCharInput(int index)
     {
-        System.out.println(message);
         return console.nextLine().charAt(index);
     }
 
     /**
      * Method to request and pass back a user input as a Double.
-     * @param message Message to display prior to input, as a String.
      * @return Returns the user's entered string as a Double.
      */
-    public double acceptDoubleInput(String message)
+    public double acceptDoubleInput()
     {
-        System.out.println(message);
         return Double.parseDouble(console.nextLine());
     }
 
     /**
      * Method to request and pass back a user input as a Integer.
-     * @param message Message to display prior to input, as a String.
      * @return Returns the user's entered string as an Integer.
      */
-    public int acceptIntegerInput(String message)
+    public int acceptIntegerInput()
     {
-        System.out.println(message);
         return Integer.parseInt(console.nextLine());
     }
 
     /**
      * Method to request and pass back a user input as a String.
-     * @param message Message to display prior to input, as a String.
      * @return Returns the user's entered string as a String.
      */
-    public String acceptStringInput(String message)
+    public String acceptStringInput()
     {
-        System.out.println(message);
         return console.nextLine();          
     }
 }

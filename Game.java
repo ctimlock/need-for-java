@@ -40,7 +40,6 @@ public class Game
         }
     }
 
-
     public void checkWin()
     {
         if (this.player.getPosition() == this.highway.getLength())
@@ -66,10 +65,22 @@ public class Game
         return player;
     }
 
+    /**
+     * @return the highway
+     */
+    public Highway getHighway() 
+    {
+        return this.highway;
+    }
+
     public static void main(String[] args) 
     {
         Game game = new Game();
         game.setDifficulty(2);
+        while (!game.player.hasDied())
+        {
+        game.takeTurn();
+        }
     }
 
     /**
@@ -168,6 +179,7 @@ public class Game
         this.highway.generateObstacles(obstacles);
 
         this.player.getVehicle().multiplyTankSize(fuelLimiter);
+        this.player.changeFuel(9999);
     }
 
     /**
@@ -193,11 +205,12 @@ public class Game
      */
     public void swerve(String upOrDown)
     {
-        switch (upOrDown.toLowerCase())
+        switch (upOrDown)
         {
             case "up":
                     this.player.movePlayer(1, -1);
                     this.player.changeFuel(-2);
+                break;
 
             case "down":
                     this.player.movePlayer(1, 1);
@@ -205,6 +218,96 @@ public class Game
                 break;
         }
 
+        this.endTurn();
+    }
+
+    public void takeTurn()
+    {
+        // Nuke the existing graphics.
+        for (int i = 0; i < 25; i++) 
+        {
+            System.out.println("");
+        }
+
+        // Render the highway and player status.
+        this.renderHighway();
+        System.out.println("");
+        System.out.println(this.player.getStatus());
+
+        boolean canSwerveUp = (this.player.getLane() == 0 ? false : true);
+        boolean canSwerveDown = (this.player.getLane() == this.highway.getHeight() - 1 ? false : true);
+        String swerveUpMessage = "Enter 1 to swerve up a lane.";
+        String swerveDownMessage = "Enter 2 to swerve down a lane.";
+        String moveForwardMessage = "Enter 3 to move forward by 1 space.";
+        String boostMessage = "Enter 4 to boost ahead " + this.player.getVehicle().getBoostSpeed() + " spaces.";
+
+        // Present viable options.
+        if (canSwerveUp == false)
+        {
+            System.out.println(swerveDownMessage);
+            System.out.println(moveForwardMessage);
+            System.out.println(boostMessage);
+        } 
+        else if (canSwerveDown == false)
+        {
+            System.out.println(swerveUpMessage);
+            System.out.println(moveForwardMessage);
+            System.out.println(boostMessage);
+        }
+        else
+        {
+            System.out.println(swerveUpMessage);
+            System.out.println(swerveDownMessage);
+            System.out.println(moveForwardMessage);
+            System.out.println(boostMessage);
+        }
+        
+        // Request player choice and check it's valid.
+        Input input = new Input();
+        int choice = 0;
+        Boolean flag = true;
+        while (flag) 
+        {
+            try 
+            {
+                choice = input.acceptIntegerInput();
+                if ((!canSwerveUp && choice == 1) || (!canSwerveDown && choice == 2) || choice > 4 || choice < 1)
+                {
+                    System.out.println("Wrong input! Try again.");
+                } else 
+                {
+                    flag = false;
+                }
+
+            } 
+            catch (Exception e) 
+            {
+                System.out.println("Wrong input! Try again.");
+            }
+        }
+
+        // Execute player choice.
+        switch (choice) 
+        {
+            case 1:
+                this.swerve("up");
+                break;
+            case 2:
+                this.swerve("down");
+                break;
+            case 3:
+                this.moveForward();
+                break;
+            case 4:
+                this.boost();
+                break;
+        
+            default:
+                this.moveForward();
+                break;
+        }
+
+        // Perform end of turn checks.
         this.endTurn();
     }
 }
