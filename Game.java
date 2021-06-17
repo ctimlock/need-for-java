@@ -76,8 +76,7 @@ public class Game
         System.out.println("There's about " + this.player.getFuel() + " litres of fuel in the tank.");
         System.out.println("Good luck. Don't get caught.");
         System.out.println("Press enter to start.");
-        Input input = new Input();
-        input.acceptStringInput();
+        Input.acceptStringInput();
         this.nukeConsole(25);
     }
 
@@ -123,6 +122,30 @@ public class Game
         return player;
     }
 
+    public void getPlayerName() 
+    {
+        System.out.println("We've just gotten confirmation of the identity of the driver:");
+        String name = "";
+        Boolean flag = true;
+        while(flag)
+        {
+            name = Input.acceptStringInput();
+            if (Validation.isLengthWithinRange(name, 3, 12))
+            {
+                this.player.setName(name);
+                flag = false;
+                System.out.println("Yes, it appears that the driver of the vehicle is none other than " + name + ", the notorious fugitive.");
+                this.nukeConsole(1);
+            }
+            else
+            {
+                System.out.println("My apologies, that appears to be a incorrect. (Must be between 3 and 12 characters long.");
+            }
+        }
+        System.out.println("Press Enter to turn off the radio.");
+        Input.acceptEmptyInput();
+    }
+
     public void hasLost()
     {
         if(this.player.hasDied())
@@ -146,6 +169,7 @@ public class Game
     {
         Game game = new Game();
         game.player.setStartingLane(game.highway.getHeight());
+        game.getPlayerName();
         game.setDifficulty();
         while (!game.player.hasDied())
         {
@@ -237,12 +261,11 @@ public class Game
 
     public void setDifficulty()
     {
-        Input input = new Input();
         int difficulty = 0;
         while (difficulty == 0)
         {
             System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
-            switch (Character.toLowerCase(input.acceptCharInput(0)))
+            switch (Character.toLowerCase(Input.acceptCharInput(0)))
             {
                 case 'e':
                 case '1':
@@ -357,14 +380,13 @@ public class Game
         this.nukeConsole(1);
         
         // Request player choice and check it's valid.
-        Input input = new Input();
         int choice = 0;
         Boolean flag = true;
         while (flag) 
         {
             try 
             {
-                choice = input.acceptIntegerInput();
+                choice = Input.acceptIntegerInput();
                 if ((!canSwerveUp && choice == 1) || (!canSwerveDown && choice == 2) || choice > 4 || choice < 1)
                 {
                     System.out.println("Wrong input! Try again.");
