@@ -124,7 +124,17 @@ public class Game
 
     public void getPlayerName() 
     {
-        System.out.println("We've just gotten confirmation of the identity of the driver:");
+        System.out.print("24/7 NEWS RADIO: \"We're coming to you with a breaking news story.\"   (Press Enter to Continue)");
+        Input.acceptEmptyInput();
+        System.out.print("24/7 NEWS RADIO: \"Reports are coming in that there is a high-speed police chase on the south bound highway.\"   (Press Enter to Continue)");
+        Input.acceptEmptyInput();
+        System.out.print("24/7 NEWS RADIO: \"Several police interceptor vehicles are in pursuit, but the driver appears to be headed towards the border.\"   (Press Enter to Continue)");
+        Input.acceptEmptyInput();
+        System.out.print("24/7 NEWS RADIO: \"...\"");
+        Input.acceptEmptyInput();
+        System.out.println("24/7 NEWS RADIO: \"We've just gotten confirmation of the identity of the driver...\"");
+        System.out.println("(Enter your name)");
+        
         String name = "";
         Boolean flag = true;
         while(flag)
@@ -134,12 +144,12 @@ public class Game
             {
                 this.player.setName(name);
                 flag = false;
-                System.out.println("Yes, it appears that the driver of the vehicle is none other than " + name + ", the notorious fugitive.");
+                System.out.println("24/7 NEWS RADIO: \"Yes, it appears that the driver of the vehicle is none other than " + name + ", the notorious fugitive.\"");
                 this.nukeConsole(1);
             }
             else
             {
-                System.out.println("My apologies, that appears to be a incorrect. (Must be between 3 and 12 characters long.");
+                System.out.println("24/7 NEWS RADIO: \"My apologies, that appears to be a incorrect. (Must be between 3 and 12 characters long.\"");
             }
         }
         System.out.println("Press Enter to turn off the radio.");
@@ -169,8 +179,7 @@ public class Game
     {
         Game game = new Game();
         game.player.setStartingLane(game.highway.getHeight());
-        game.getPlayerName();
-        game.setDifficulty();
+        game.startGame();
         while (!game.player.hasDied())
         {
         game.takeTurn();
@@ -310,6 +319,18 @@ public class Game
 
     public void startGame()
     {
+        this.nukeConsole(25);
+        System.out.println("    N E E D");
+        System.out.println("              FOR");
+        System.out.println("                    J A V A");
+        this.nukeConsole(5);
+        System.out.println("Press Enter to begin.");
+        Input.acceptEmptyInput();
+
+        this.nukeConsole(25);
+        this.getPlayerName();
+
+        this.nukeConsole(25);
         this.setDifficulty();
 
     }
