@@ -25,9 +25,9 @@ public class Player
         this.fuel = fuel;
     }
 
-    public void changeFuel(int fuel)
+    public void changeFuel(int fuelChange)
     {
-        this.fuel += fuel;
+        this.fuel = Math.min(this.fuel + fuelChange, this.vehicle.getTankSize());
     }
 
     public void changeDamage(int damage)
@@ -79,6 +79,12 @@ public class Player
     public Vehicle getVehicle() 
     {
         return vehicle;
+    }
+
+    public void movePlayer(int horizontal, int vertical)
+    {
+        this.position += horizontal;
+        this.lane += vertical;
     }
     
     /**

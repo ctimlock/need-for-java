@@ -33,6 +33,54 @@ public class Highway
     }
 
     /**
+     * Method which adds a set number of obstacles to an exisiting highway. The first three highway sections will not have obstacles placed.
+     * @param obstacleNumber The number of obstacles to be added
+     */
+    public void generateObstacles(int obstacleNumber)
+    {
+        for (int i = 0; i < obstacleNumber; i++) 
+        {
+            boolean success = false;
+            while(!success)
+            {
+                int randomX = (int)(Math.random() * (this.length - 3) + 3);
+                int randomY = (int)(Math.random() * this.height);
+
+                //Checks whether tile is already an obstacle.
+                if (this.getSpecificTile(randomX, randomY).getTileType().equals("Road"))
+                {
+                    int selection = (int)(Math.random() * 10);
+                    String newTileType = "";
+                    switch (selection) 
+                    {
+                        case 0:
+                        case 1:
+                        case 2:
+                            newTileType = "Fuel";
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                            newTileType = "Roadblock";
+                            break;
+                        case 7:
+                        case 8:
+                            newTileType = "Tyre Spikes";
+                            break;
+
+                        case 9:
+                            newTileType = "Manhole";
+                            break;
+                    }
+                    this.getSpecificTile(randomX, randomY).setTileToObstacle(newTileType);
+                    success = true;
+                }
+            }
+        }
+    }
+
+    /**
      * @return the height
      */
     public int getHeight() 
