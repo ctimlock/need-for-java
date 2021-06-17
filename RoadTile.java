@@ -117,6 +117,12 @@ public class RoadTile
                 newDamage = 60;
                 newFuelMod = 0;
                 break;
+            
+            case "Border":
+                newIcon = ">";
+                newDamage = 0;
+                newFuelMod = 0;
+                break;
         }
 
         this.tileType = newTileType;

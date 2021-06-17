@@ -8,10 +8,10 @@ public class Highway
     {
         height = 1;
         length = 1;
-        tiles = new RoadTile[length][height];
+        tiles = new RoadTile[length + 20][height];
         for (int y = 0; y < height; y++) 
         {
-            for (int x = 0; x < length; x++) 
+            for (int x = 0; x < length + 20; x++) 
             {
                 tiles[x][y] = new RoadTile();
             }
@@ -22,10 +22,10 @@ public class Highway
     {
         this.height = height;
         this.length = length;
-        tiles = new RoadTile[length][height];
+        tiles = new RoadTile[length + 20][height];
         for (int y = 0; y < height; y++) 
         {
-            for (int x = 0; x < length; x++) 
+            for (int x = 0; x < length + 20; x++) 
             {
                 tiles[x][y] = new RoadTile();
             }
@@ -78,6 +78,13 @@ public class Highway
                 }
             }
         }
+        for (int a = this.length; a < this.length + 20; a++) 
+        {
+            for (int b = 0; b < height; b++)
+            {
+                this.getSpecificTile(a, b).setTileToObstacle("Border");
+            }
+        }
     }
 
     /**
@@ -108,6 +115,21 @@ public class Highway
     {
         return tiles[x][y];
     }
+
+    public int getSpecificTileDamage(int x, int y)
+    {
+        return tiles[x][y].getDamage();
+    }    
+
+    public int getSpecificTileFuelMod(int x, int y)
+    {
+        return tiles[x][y].getFuelMod();
+    }
+    
+    public String getSpecificTileTileType(int x, int y)
+    {
+        return tiles[x][y].getTileType();
+    }    
 
     public String getLaneMarkers(int number, char symbol)
     {

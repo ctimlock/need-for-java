@@ -25,10 +25,8 @@ public class Game
 
     public void calculateEffect()
     {
-        int[] location = this.player.getLocation();
-        RoadTile currentTile = this.highway.getSpecificTile(location[0], location[1]);
-        this.player.changeFuel(currentTile.getFuelMod());
-        this.player.changeDamage(currentTile.getDamage());
+        this.player.changeFuel(this.highway.getSpecificTileFuelMod(this.player.getPosition(), this.player.getLane()));
+        this.player.changeDamage(this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()));
     }
 
     public void checkLose()
@@ -36,17 +34,50 @@ public class Game
         if(this.player.hasDied())
         {
             System.out.println("Sucked in idiot! You lose.");
-            // TODO: death actions
+            // TODO: death actions.
         }
     }
 
     public void checkWin()
     {
-        if (this.player.getPosition() == this.highway.getLength())
+        if (this.player.getPosition() >= this.highway.getLength())
         {
             System.out.println("Congratulations! You win.");
             // TODO: Add more stuff.
         }
+    }
+
+    public void setDifficulty()
+    {
+        Input input = new Input();
+        int difficulty = 0;
+        while (difficulty == 0)
+        {
+            System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
+            switch (Character.toLowerCase(input.acceptCharInput(0)))
+            {
+                case 'e':
+                case '1':
+                    difficulty = 1;
+                    break;
+
+                case 'm':
+                case '2':
+                    difficulty = 2;
+                    break;
+
+                case 'h':
+                case '3':
+                    difficulty = 3;
+                    break;
+
+                default:
+                    difficulty = 0;
+                    System.out.println("Invalid selection.");
+                    break;
+            }
+        }
+        this.applyDifficulty(difficulty);
     }
 
     public void endTurn()
@@ -77,8 +108,8 @@ public class Game
     public static void main(String[] args) 
     {
         Game game = new Game();
-        game.setDifficulty(2);
         game.player.setStartingLane(game.highway.getHeight());
+        game.setDifficulty();
         while (!game.player.hasDied())
         {
         game.takeTurn();
@@ -112,7 +143,7 @@ public class Game
         int playerY = player.getLane();
         highway.getSpecificTile(playerX, playerY).setIcon(player.ICON);
 
-        int remaining = this.highway.getLength() - playerX;
+        int remaining = this.highway.getLength() + 3 - playerX;
         int renderLength = Math.min(RENDER_DISTANCE, remaining);
 
         // Inserts the upper border of the highway.
@@ -142,12 +173,13 @@ public class Game
      * 
      * @param difficulty
      */
-    public void setDifficulty(int difficulty)
+    public void applyDifficulty(int difficulty)
     {
         int lengthMin = 0;
         int lengthMax = 0;
         double fuelLimiter = 0.0;
         int obstacles = 0;
+        String choice = "";
 
         switch (difficulty) 
         {
@@ -156,6 +188,7 @@ public class Game
                 lengthMax = 15;
                 fuelLimiter = 1.0;
                 obstacles = 12;
+                choice = "Easy";
                 break;
 
             case 2:
@@ -163,6 +196,7 @@ public class Game
                 lengthMax = 30;
                 fuelLimiter = 0.8;
                 obstacles = 24;
+                choice = "Moderate";
                 break;
 
             case 3:
@@ -170,6 +204,7 @@ public class Game
                 lengthMax = 50;
                 fuelLimiter = 0.5;
                 obstacles = 45;
+                choice = "Hard";
                 break;
         
             default:
@@ -177,6 +212,7 @@ public class Game
                 lengthMax = 15;
                 fuelLimiter = 1.0;
                 obstacles = 12;
+                choice = "Easy";
                 break;
         }
 
@@ -189,35 +225,42 @@ public class Game
 
         this.player.getVehicle().multiplyTankSize(fuelLimiter);
         this.player.changeFuel(9999);
+
+        this.nukeConsole(25);
+        System.out.println("You have chosen " + choice + ".");
+        System.out.println("It's " + this.highway.getLength() + " KM to make it to the border.");
+        System.out.println("There's about " + this.player.getFuel() + " litres of fuel in the tank.");
+        System.out.println("Good luck. Don't get caught.");
+        System.out.println("Press enter to start.");
+        Input input = new Input();
+        input.acceptStringInput();
+        this.nukeConsole(25);
     }
 
     public void setCurrentFlavourText()
     {
-        int[] location = this.player.getLocation();
-        RoadTile currentTile = this.highway.getSpecificTile(location[0], location[1]);
         String output = "";
 
-        switch (currentTile.getTileType()) 
+        switch (this.highway.getSpecificTileTileType(this.player.getPosition(), this.player.getLane())) 
         {
-            
             case "Road":
                 output = "";
                 break;
 
             case "Fuel":
-                output = "You picked up " + currentTile.getFuelMod() + " fuel.";
+                output = "You picked up " + this.highway.getSpecificTileFuelMod(this.player.getPosition(), this.player.getLane()) + " fuel.";
                 break;
                 
             case "Roadblock":
-                output = "Careful, you hit a roadblock. You took " + currentTile.getDamage() + " damage.";
+                output = "Careful, you hit a roadblock. You took " + this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()) + " damage.";
                 break;
             
             case "Tyre Spikes":
-                output = "Ouch, you ran over some tyre spikes. You took " + currentTile.getDamage() + " damage.";
+                output = "Ouch, you ran over some tyre spikes. You took " + this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()) + " damage.";
                 break;
                 
             case "Manhole":
-                output = "OOFT, you hit an open manhole! You took " + currentTile.getDamage() + " damage!";
+                output = "OOFT, you hit an open manhole! You took " + this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()) + " damage!";
                 break;
         }
         this.player.setFlavourText(output);
@@ -238,6 +281,12 @@ public class Game
     public void setPlayer(Player player) 
     {
         this.player = player;
+    }
+
+    public void startGame()
+    {
+        this.setDifficulty();
+
     }
 
     /**
@@ -283,6 +332,7 @@ public class Game
         // Present viable options.
         if (canSwerveUp == false)
         {
+            System.out.println("");
             System.out.println(swerveDownMessage);
             System.out.println(moveForwardMessage);
             System.out.println(boostMessage);
@@ -290,6 +340,7 @@ public class Game
         else if (canSwerveDown == false)
         {
             System.out.println(swerveUpMessage);
+            System.out.println("");
             System.out.println(moveForwardMessage);
             System.out.println(boostMessage);
         }
