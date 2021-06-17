@@ -7,6 +7,7 @@ public class Player
     private int damage;
     private int fuel;
     private String flavourText;
+    private String name;
 
     public Player()
     {
@@ -82,6 +83,14 @@ public class Player
     } 
 
     /**
+     * @return the name
+     */
+    public String getName() 
+    {
+        return name;
+    }
+
+    /**
      * Accessor method to retrieve the position of the player.
      * @return The position, returned as an integer.
      */
@@ -149,6 +158,14 @@ public class Player
     public void setLane(int lane) 
     {
         this.lane = lane;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     /**
