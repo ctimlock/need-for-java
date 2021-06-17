@@ -75,7 +75,7 @@ public class Game
     /**
      * Method that increases the position of the player's player by one space.
      */
-    public void movePlayerForward()
+    public void moveForward()
     {
         this.player.movePlayer(1, 0);
         this.player.changeFuel(-1);
