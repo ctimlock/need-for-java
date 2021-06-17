@@ -160,6 +160,11 @@ public class Player
         this.position = position;
     }
 
+    public void setStartingLane(int lanes)
+    {
+        this.lane = (int)(Math.random() * lanes);
+    }
+
     /**
      * Mutator method that sets the vehicle of the player.
      * @param vehicle The vehicle to set, as an object of the class Vehicle.

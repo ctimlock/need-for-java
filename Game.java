@@ -52,8 +52,8 @@ public class Game
     public void endTurn()
     {
         this.checkWin();
-        this.checkLose();
         this.calculateEffect();
+        this.checkLose();
         this.setCurrentFlavourText();
     }
 
@@ -78,6 +78,7 @@ public class Game
     {
         Game game = new Game();
         game.setDifficulty(2);
+        game.player.setStartingLane(game.highway.getHeight());
         while (!game.player.hasDied())
         {
         game.takeTurn();
