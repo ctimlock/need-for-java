@@ -13,162 +13,6 @@ public class Game
         highway = new Highway();
     }
 
-    public void boost()
-    {
-        int x = this.player.getVehicle().getBoostSpeed();
-        for (int i = 0; i < x; i++) 
-        {
-            this.player.movePlayer(1, 0);
-        }
-        this.player.changeFuel(-x * 3);
-    }
-
-    public void calculateEffect()
-    {
-        this.player.changeFuel(this.highway.getSpecificTileFuelMod(this.player.getPosition(), this.player.getLane()));
-        this.player.changeDamage(this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()));
-    }
-
-    public void checkLose()
-    {
-        if(this.player.hasDied())
-        {
-            System.out.println("Sucked in idiot! You lose.");
-            // TODO: death actions.
-        }
-    }
-
-    public void checkWin()
-    {
-        if (this.player.getPosition() >= this.highway.getLength())
-        {
-            System.out.println("Congratulations! You win.");
-            // TODO: Add more stuff.
-        }
-    }
-
-    public void setDifficulty()
-    {
-        Input input = new Input();
-        int difficulty = 0;
-        while (difficulty == 0)
-        {
-            System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
-            switch (Character.toLowerCase(input.acceptCharInput(0)))
-            {
-                case 'e':
-                case '1':
-                    difficulty = 1;
-                    break;
-
-                case 'm':
-                case '2':
-                    difficulty = 2;
-                    break;
-
-                case 'h':
-                case '3':
-                    difficulty = 3;
-                    break;
-
-                default:
-                    difficulty = 0;
-                    System.out.println("Invalid selection.");
-                    break;
-            }
-        }
-        this.applyDifficulty(difficulty);
-    }
-
-    public void endTurn()
-    {
-        this.checkWin();
-        this.calculateEffect();
-        this.checkLose();
-        this.setCurrentFlavourText();
-    }
-
-    /**
-     * Method that returns the player.
-     * @return The player class Player.
-     */
-    public Player getPlayer() 
-    {
-        return player;
-    }
-
-    /**
-     * @return the highway
-     */
-    public Highway getHighway() 
-    {
-        return this.highway;
-    }
-
-    public static void main(String[] args) 
-    {
-        Game game = new Game();
-        game.player.setStartingLane(game.highway.getHeight());
-        game.setDifficulty();
-        while (!game.player.hasDied())
-        {
-        game.takeTurn();
-        }
-    }
-
-    /**
-     * Method that increases the position of the player's player by one space.
-     */
-    public void moveForward()
-    {
-        this.player.movePlayer(1, 0);
-        this.player.changeFuel(-1);
-    }
-
-    public void nukeConsole(int lines)
-    {
-        for (int i = 0; i < lines; i++) 
-        {
-            System.out.println("");
-        }
-    }
-
-    /**
-     * Method that renders the current highway.
-     */
-    public void renderHighway()
-    {
-        // Sets the tile at the player's current position to display the player icon.
-        int playerX = player.getPosition();
-        int playerY = player.getLane();
-        highway.getSpecificTile(playerX, playerY).setIcon(player.ICON);
-
-        int remaining = this.highway.getLength() + 3 - playerX;
-        int renderLength = Math.min(RENDER_DISTANCE, remaining);
-
-        // Inserts the upper border of the highway.
-        System.out.println(this.highway.getLaneMarkers(renderLength, '='));
-
-        for (int y = 0; y < this.highway.getHeight(); y++) 
-        {
-            for (int x = 0; x < renderLength; x++) 
-            {
-                // Begins printing road tiles between player's position and either the render distance, or the end of the highway.
-                System.out.print(this.highway.getSpecificTile(x + playerX, y).getIcon() + " ");
-            }
-            System.out.println("");
-
-            if (y < this.highway.getHeight() - 1)
-            {
-                // Inserts a lane divider between internal lanes.
-                System.out.println(this.highway.getLaneMarkers(renderLength, '-'));
-            }          
-        }
-
-        // Inserts the lower border of the highway.
-        System.out.println(this.highway.getLaneMarkers(renderLength, '='));
-    }
-
     /**
      * 
      * @param difficulty
@@ -237,6 +81,131 @@ public class Game
         this.nukeConsole(25);
     }
 
+    public void boost()
+    {
+        int x = this.player.getVehicle().getBoostSpeed();
+        for (int i = 0; i < x; i++) 
+        {
+            this.player.movePlayer(1, 0);
+        }
+        this.player.changeFuel(-x * 3);
+    }
+
+    public void calculateEffect()
+    {
+        this.player.changeFuel(this.highway.getSpecificTileFuelMod(this.player.getPosition(), this.player.getLane()));
+        this.player.changeDamage(this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()));
+    }
+
+    public void endTurn()
+    {
+        this.hasWon();
+        this.calculateEffect();
+        this.hasLost();
+        this.setCurrentFlavourText();
+    }
+
+    /**
+     * @return the highway
+     */
+    public Highway getHighway() 
+    {
+        return this.highway;
+    }
+
+
+    /**
+     * Method that returns the player.
+     * @return The player class Player.
+     */
+    public Player getPlayer() 
+    {
+        return player;
+    }
+
+    public void hasLost()
+    {
+        if(this.player.hasDied())
+        {
+            System.out.println("Sucked in idiot! You lose.");
+            // TODO: death actions.
+        }
+    }
+
+
+    public void hasWon()
+    {
+        if (this.player.getPosition() >= this.highway.getLength())
+        {
+            System.out.println("Congratulations! You win.");
+            // TODO: Add more stuff.
+        }
+    }
+
+    public static void main(String[] args) 
+    {
+        Game game = new Game();
+        game.player.setStartingLane(game.highway.getHeight());
+        game.setDifficulty();
+        while (!game.player.hasDied())
+        {
+        game.takeTurn();
+        }
+    }
+
+    /**
+     * Method that increases the position of the player's player by one space.
+     */
+    public void moveForward()
+    {
+        this.player.movePlayer(1, 0);
+        this.player.changeFuel(-1);
+    }
+
+    public void nukeConsole(int lines)
+    {
+        for (int i = 0; i < lines; i++) 
+        {
+            System.out.println("");
+        }
+    }
+
+    /**
+     * Method that renders the current highway.
+     */
+    public void renderHighway()
+    {
+        // Sets the tile at the player's current position to display the player icon.
+        int playerX = player.getPosition();
+        int playerY = player.getLane();
+        highway.getSpecificTile(playerX, playerY).setIcon(player.ICON);
+
+        int remaining = this.highway.getLength() + 3 - playerX;
+        int renderLength = Math.min(RENDER_DISTANCE, remaining);
+
+        // Inserts the upper border of the highway.
+        System.out.println(this.highway.getLaneMarkers(renderLength, '='));
+
+        for (int y = 0; y < this.highway.getHeight(); y++) 
+        {
+            for (int x = 0; x < renderLength; x++) 
+            {
+                // Begins printing road tiles between player's position and either the render distance, or the end of the highway.
+                System.out.print(this.highway.getSpecificTile(x + playerX, y).getIcon() + " ");
+            }
+            System.out.println("");
+
+            if (y < this.highway.getHeight() - 1)
+            {
+                // Inserts a lane divider between internal lanes.
+                System.out.println(this.highway.getLaneMarkers(renderLength, '-'));
+            }          
+        }
+
+        // Inserts the lower border of the highway.
+        System.out.println(this.highway.getLaneMarkers(renderLength, '='));
+    }
+
     public void setCurrentFlavourText()
     {
         String output = "";
@@ -266,6 +235,39 @@ public class Game
         this.player.setFlavourText(output);
     }
 
+    public void setDifficulty()
+    {
+        Input input = new Input();
+        int difficulty = 0;
+        while (difficulty == 0)
+        {
+            System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
+            switch (Character.toLowerCase(input.acceptCharInput(0)))
+            {
+                case 'e':
+                case '1':
+                    difficulty = 1;
+                    break;
+
+                case 'm':
+                case '2':
+                    difficulty = 2;
+                    break;
+
+                case 'h':
+                case '3':
+                    difficulty = 3;
+                    break;
+
+                default:
+                    difficulty = 0;
+                    System.out.println("Invalid selection.");
+                    break;
+            }
+        }
+        this.applyDifficulty(difficulty);
+    }
+
     /**
      * @param highway the highway to set
      */
@@ -273,7 +275,7 @@ public class Game
     {
         this.highway = highway;
     }
-    
+
     /**
      * Mutator method to set the player.
      * @param player The player to set, passed in as an object of the class Player. 
