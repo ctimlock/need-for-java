@@ -72,6 +72,11 @@ public class Vehicle
         return type;
     }
 
+    public void multiplyTankSize(double multiplier)
+    {
+        this.tankSize *= multiplier;
+    }
+
     /**
      * Mutator method to set the boost speed of the vehicle object.
      * @param boostSpeed The boostSpeed to set.

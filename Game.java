@@ -15,11 +15,13 @@ public class Game
 
     public void boost()
     {
-        for (int i = 0; i < this.player.getVehicle().getBoostSpeed(); i++) 
+        int x = this.player.getVehicle().getBoostSpeed();
+        for (int i = 0; i < x; i++) 
         {
-            this.movePlayerForward();
+            this.player.movePlayer(1, 0);
         }
-        this.player.changeFuel((this.player.getVehicle().getBoostSpeed() * 2));
+        this.player.changeFuel(x * 3);
+        this.calculateEffect();
     }
 
     public void calculateEffect()
@@ -27,54 +29,6 @@ public class Game
         RoadTile currentTile = this.highway.getSpecificTile(this.player.getPosition(), this.player.getLane());
         this.player.changeFuel(currentTile.getFuelMod());
         this.player.changeDamage(currentTile.getHealthMod());
-    }
-
-    /**
-     * Method which adds a set number of obstacles to an exisiting highway. The first three highway sections will not have obstacles placed.
-     * @param obstacleNumber The number of obstacles to be added
-     */
-    public void generateObstacles(int obstacleNumber)
-    {
-        for (int i = 0; i < obstacleNumber; i++) 
-        {
-            boolean success = false;
-            while(!success)
-            {
-                int randomX = (int)(Math.random() * (this.highway.getLength() - 3) + 3);
-                int randomY = (int)(Math.random() * this.highway.getHeight());
-
-                //Checks whether tile is already an obstacle.
-                if (this.highway.getSpecificTile(randomX, randomY).getTileType().equals("Road"))
-                {
-                    int selection = (int)(Math.random() * 10);
-                    String newTileType = "";
-                    switch (selection) 
-                    {
-                        case 0:
-                        case 1:
-                        case 2:
-                            newTileType = "Fuel";
-                            break;
-                        case 3:
-                        case 4:
-                        case 5:
-                        case 6:
-                            newTileType = "Roadblock";
-                            break;
-                        case 7:
-                        case 8:
-                            newTileType = "Tyre Spikes";
-                            break;
-
-                        case 9:
-                            newTileType = "Manhole";
-                            break;
-                    }
-                    this.highway.getSpecificTile(randomX, randomY).setTileToObstacle(newTileType);
-                    success = true;
-                }
-            }
-        }
     }
 
     /**
@@ -97,10 +51,9 @@ public class Game
      */
     public void movePlayerForward()
     {
-        int newPosition = player.getPosition() + 1;
-        player.setPosition(newPosition);
-        player.changeFuel(-1);
-        calculateEffect();
+        this.player.movePlayer(1, 0);
+        this.player.changeFuel(-1);
+        this.calculateEffect();
     }
 
     /**
@@ -113,7 +66,7 @@ public class Game
         int playerY = player.getLane();
         highway.getSpecificTile(playerX, playerY).setIcon(player.ICON);
 
-        int remaining = this.highway.getLength() - this.player.getPosition();
+        int remaining = this.highway.getLength() - playerX;
         int renderLength = Math.min(RENDER_DISTANCE, remaining);
 
         // Inserts the upper border of the highway.
@@ -124,7 +77,7 @@ public class Game
             for (int x = 0; x < renderLength; x++) 
             {
                 // Begins printing road tiles between player's position and either the render distance, or the end of the highway.
-                System.out.print(this.highway.getSpecificTile(x + this.player.getPosition(), y).getIcon() + " ");
+                System.out.print(this.highway.getSpecificTile(x + playerX, y).getIcon() + " ");
             }
             System.out.println("");
 
@@ -139,6 +92,10 @@ public class Game
         System.out.println(this.highway.getLaneMarkers(renderLength, '='));
     }
 
+    /**
+     * 
+     * @param difficulty
+     */
     public void setDifficulty(int difficulty)
     {
         int lengthMin = 0;
@@ -182,10 +139,9 @@ public class Game
         Highway highway = new Highway(length, 3);
         this.setHighway(highway);
 
-        this.generateObstacles(obstacles);
+        this.highway.generateObstacles(obstacles);
 
-        int tankSize = (int)(this.player.getVehicle().getTankSize() * fuelLimiter);
-        this.player.getVehicle().setTankSize(tankSize);
+        this.player.getVehicle().multiplyTankSize(fuelLimiter);
     }
 
     /**
@@ -211,32 +167,18 @@ public class Game
      */
     public void swerve(String upOrDown)
     {
-        int upDownInt = 0;
         switch (upOrDown.toLowerCase())
         {
             case "up":
-                upDownInt = -1;
-                break;
+                    this.player.movePlayer(1, -1);
+                    this.player.changeFuel(-2);
 
             case "down":
-                upDownInt = 1;
-                break;
-        
-            default:
+                    this.player.movePlayer(1, 1);
+                    this.player.changeFuel(-2);
                 break;
         }
 
-        int newLane = player.getLane() + upDownInt;
-
-        if (newLane < this.highway.getHeight() && newLane >= 0) 
-        {
-            player.setLane(newLane);
-            player.changeFuel(-1);
-        } 
-        else 
-        {
-            System.out.println("Error: illegal move detected. Moving player forwards instead.");
-        }
-        this.movePlayerForward();
+        calculateEffect();
     }
 }
