@@ -155,7 +155,7 @@ public class Game
                 System.out.println("(Must be between 3 and 12 characters long.)");
             }
         }
-        System.out.println("Press Enter to turn off the radio.");
+        System.out.println("Press Enter to continue.");
         Input.acceptEmptyInput();
     }
 
@@ -181,8 +181,8 @@ public class Game
     public static void main(String[] args) 
     {
         Game game = new Game();
-        game.player.setStartingLane(game.highway.getHeight());
         game.startGame();
+        game.player.setStartingLane(game.highway.getHeight());
         while (!game.player.hasDied())
         {
         game.takeTurn();
@@ -350,6 +350,17 @@ public class Game
 
         this.pushConsole(25);
         this.getPlayerName();
+
+        this.pushConsole(25);
+        try
+        {
+            this.player.selectVehicle();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error, could not successfully load vehicles.");
+            System.exit(0);
+        }
 
         this.pushConsole(25);
         this.setDifficulty();
