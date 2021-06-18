@@ -114,7 +114,6 @@ public class Game
         return this.highway;
     }
 
-
     /**
      * Method that returns the player.
      * @return The player class Player.
@@ -159,22 +158,35 @@ public class Game
         Input.acceptEmptyInput();
     }
 
-    public void hasLost()
+    public boolean hasLost()
     {
         if(this.player.hasDied())
         {
-            System.out.println("Sucked in idiot! You lose.");
-            // TODO: death actions.
+            int x = this.player.getPosition();
+            int y = this.player.getLane();
+            String finisher = this.highway.getSpecificTileTileType(x, y);
+
+            String outcome = this.player.getName() + " drove " + this.highway.getLength() + " kilometers before they ran into a " + finisher + ", after which they were caught by the police.";
+            this.player.setFlavourText(outcome);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
-
-    public void hasWon()
+    public boolean hasWon()
     {
         if (this.player.getPosition() >= this.highway.getLength())
         {
-            System.out.println("Congratulations! You win.");
-            // TODO: Add more stuff.
+            String outcome = this.player.getName() + " drove " + this.highway.getLength() + " kilometers to outrun the cops, and made it across the border.";
+            this.player.setFlavourText(outcome);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
