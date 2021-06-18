@@ -70,14 +70,14 @@ public class Game
         this.player.getVehicle().multiplyTankSize(fuelLimiter);
         this.player.changeFuel(9999);
 
-        this.nukeConsole(25);
+        this.pushConsole(25);
         System.out.println("You have chosen " + choice + ".");
         System.out.println("It's " + this.highway.getLength() + " KM to make it to the border.");
         System.out.println("There's about " + this.player.getFuel() + " litres of fuel in the tank.");
         System.out.println("Good luck. Don't get caught.");
         System.out.println("Press enter to start.");
         Input.acceptStringInput();
-        this.nukeConsole(25);
+        this.pushConsole(25);
     }
 
     public void boost()
@@ -92,8 +92,10 @@ public class Game
 
     public void calculateEffect()
     {
-        this.player.changeFuel(this.highway.getSpecificTileFuelMod(this.player.getPosition(), this.player.getLane()));
-        this.player.changeDamage(this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()));
+        int x = this.player.getPosition();
+        int y = this.player.getLane();
+        this.player.changeFuel(this.highway.getSpecificTileFuelMod(x, y));
+        this.player.changeDamage(this.highway.getSpecificTileDamage(x, y));
     }
 
     public void endTurn()
@@ -145,11 +147,12 @@ public class Game
                 this.player.setName(name);
                 flag = false;
                 System.out.println("24/7 NEWS RADIO: \"Yes, it appears that the driver of the vehicle is none other than " + name + ", the notorious fugitive.\"");
-                this.nukeConsole(1);
+                this.pushConsole(1);
             }
             else
             {
-                System.out.println("24/7 NEWS RADIO: \"My apologies, that appears to be a incorrect. (Must be between 3 and 12 characters long.\"");
+                System.out.println("24/7 NEWS RADIO: \"My apologies, that appears to be a incorrect.\"");
+                System.out.println("(Must be between 3 and 12 characters long.)");
             }
         }
         System.out.println("Press Enter to turn off the radio.");
@@ -195,7 +198,7 @@ public class Game
         this.player.changeFuel(-1);
     }
 
-    public void nukeConsole(int lines)
+    public void pushConsole(int lines)
     {
         for (int i = 0; i < lines; i++) 
         {
@@ -242,27 +245,29 @@ public class Game
     public void setCurrentFlavourText()
     {
         String output = "";
+        int x = this.player.getPosition();
+        int y = this.player.getLane();
 
-        switch (this.highway.getSpecificTileTileType(this.player.getPosition(), this.player.getLane())) 
+        switch (this.highway.getSpecificTileTileType(x, y)) 
         {
             case "Road":
                 output = "";
                 break;
 
             case "Fuel":
-                output = "You picked up " + this.highway.getSpecificTileFuelMod(this.player.getPosition(), this.player.getLane()) + " fuel.";
+                output = "You picked up " + this.highway.getSpecificTileFuelMod(x, y) + " fuel.";
                 break;
                 
             case "Roadblock":
-                output = "Careful, you hit a roadblock. You took " + this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()) + " damage.";
+                output = "Careful, you hit a roadblock. You took " + this.highway.getSpecificTileDamage(x, y) + " damage.";
                 break;
             
             case "Tyre Spikes":
-                output = "Ouch, you ran over some tyre spikes. You took " + this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()) + " damage.";
+                output = "Ouch, you ran over some tyre spikes. You took " + this.highway.getSpecificTileDamage(x, y) + " damage.";
                 break;
                 
             case "Manhole":
-                output = "OOFT, you hit an open manhole! You took " + this.highway.getSpecificTileDamage(this.player.getPosition(), this.player.getLane()) + " damage!";
+                output = "OOFT, you hit an open manhole! You took " + this.highway.getSpecificTileDamage(x, y) + " damage!";
                 break;
         }
         this.player.setFlavourText(output);
@@ -273,8 +278,24 @@ public class Game
         int difficulty = 0;
         while (difficulty == 0)
         {
-            System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
-            switch (Character.toLowerCase(Input.acceptCharInput(0)))
+            char choice = ' ';
+            Boolean flag = true;
+            while (flag)
+            {
+                try 
+                {
+                System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
+                choice = Character.toLowerCase(Input.acceptCharInput(0));
+                flag = false;
+                } 
+                catch (Exception e) 
+                {
+                    System.out.println("Error, invalid input detected. Please try again.");
+                }
+            }
+
+
+            switch (choice)
             {
                 case 'e':
                 case '1':
@@ -319,18 +340,18 @@ public class Game
 
     public void startGame()
     {
-        this.nukeConsole(25);
+        this.pushConsole(25);
         System.out.println("    N E E D");
         System.out.println("              FOR");
         System.out.println("                    J A V A");
-        this.nukeConsole(5);
+        this.pushConsole(5);
         System.out.println("Press Enter to begin.");
         Input.acceptEmptyInput();
 
-        this.nukeConsole(25);
+        this.pushConsole(25);
         this.getPlayerName();
 
-        this.nukeConsole(25);
+        this.pushConsole(25);
         this.setDifficulty();
 
     }
@@ -357,48 +378,48 @@ public class Game
 
     public void takeTurn()
     {
-        // Nuke the existing graphics.
-        this.nukeConsole(25);
+        // push the existing graphics.
+        this.pushConsole(25);
 
         // Render the highway and player status.
         this.renderHighway();
-        this.nukeConsole(1);
+        this.pushConsole(1);
         System.out.println(this.player.getFlavourText());
-        this.nukeConsole(1);
+        this.pushConsole(1);
         System.out.println(this.player.getStatus() + "/" + this.highway.getLength());
-        this.nukeConsole(1);
+        this.pushConsole(1);
 
         boolean canSwerveUp = (this.player.getLane() == 0 ? false : true);
         boolean canSwerveDown = (this.player.getLane() == this.highway.getHeight() - 1 ? false : true);
         String swerveUpMessage = "Enter 1 to swerve up a lane.";
-        String swerveDownMessage = "Enter 2 to swerve down a lane.";
-        String moveForwardMessage = "Enter 3 to move forward by 1 space.";
+        String moveForwardMessage = "Enter 2 to move forward by 1 space.";
+        String swerveDownMessage = "Enter 3 to swerve down a lane.";
         String boostMessage = "Enter 4 to boost ahead " + this.player.getVehicle().getBoostSpeed() + " spaces.";
 
         // Present viable options.
         if (canSwerveUp == false)
         {
             System.out.println("");
-            System.out.println(swerveDownMessage);
             System.out.println(moveForwardMessage);
+            System.out.println(swerveDownMessage);
             System.out.println(boostMessage);
         } 
         else if (canSwerveDown == false)
         {
             System.out.println(swerveUpMessage);
-            System.out.println("");
             System.out.println(moveForwardMessage);
+            System.out.println("");
             System.out.println(boostMessage);
         }
         else
         {
             System.out.println(swerveUpMessage);
-            System.out.println(swerveDownMessage);
             System.out.println(moveForwardMessage);
+            System.out.println(swerveDownMessage);
             System.out.println(boostMessage);
         }
 
-        this.nukeConsole(1);
+        this.pushConsole(1);
         
         // Request player choice and check it's valid.
         int choice = 0;
@@ -408,7 +429,7 @@ public class Game
             try 
             {
                 choice = Input.acceptIntegerInput();
-                if ((!canSwerveUp && choice == 1) || (!canSwerveDown && choice == 2) || choice > 4 || choice < 1)
+                if ((!canSwerveUp && choice == 1) || (!canSwerveDown && choice == 3) || choice > 4 || choice < 1)
                 {
                     System.out.println("Wrong input! Try again.");
                 } else 
@@ -430,10 +451,10 @@ public class Game
                 this.swerve("up");
                 break;
             case 2:
-                this.swerve("down");
+                this.moveForward();
                 break;
             case 3:
-                this.moveForward();
+                this.swerve("down");
                 break;
             case 4:
                 this.boost();
