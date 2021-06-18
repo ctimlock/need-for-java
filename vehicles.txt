@@ -1,3 +1,5 @@
 Motorcycle,4,100,30
 Car,3,120,50
 Garbage Truck,2,150,100
+Fire Engine,2,60,200
+Aston Martin DB9,4,100,40

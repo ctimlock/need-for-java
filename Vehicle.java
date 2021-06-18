@@ -3,6 +3,7 @@
  */
 public class Vehicle 
 {
+    private final String fileName = "vehicles.txt"; 
     private String type;
     private int boostSpeed;
     private int tankSize;
@@ -42,6 +43,14 @@ public class Vehicle
     public int getBoostSpeed() 
     {
         return boostSpeed;  
+    }
+
+    /**
+     * @return the fileName
+     */
+    public String getFileName() 
+    {
+        return fileName;
     }
 
     /**
