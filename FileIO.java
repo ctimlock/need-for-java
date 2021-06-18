@@ -74,9 +74,10 @@ public class FileIO
 
     public void writeFile(String inputString) 
     {
-        try (FileWriter writer = new FileWriter(fileName))
+        try (FileWriter writer = new FileWriter(fileName, true))
         {
-            writer.write(inputString);
+            //writer.write(inputString);
+            writer.append(inputString);
         }
         catch (Exception e)
         {
