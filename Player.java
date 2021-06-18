@@ -101,7 +101,7 @@ public class Player
 
     public String getStatus()
     {
-        return "Distance: " + position + "     Damage: " + damage + "/" + this.vehicle.getHitPoints() + "     Fuel: " + fuel + "/" + this.vehicle.getTankSize();
+        return "Damage: " + damage + "/" + this.vehicle.getHitPoints() + "     Fuel: " + fuel + "/" + this.vehicle.getTankSize() + "     Distance: " + position;
     }
 
     /**

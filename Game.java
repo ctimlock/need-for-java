@@ -365,7 +365,7 @@ public class Game
         this.nukeConsole(1);
         System.out.println(this.player.getFlavourText());
         this.nukeConsole(1);
-        System.out.println(this.player.getStatus());
+        System.out.println(this.player.getStatus() + "/" + this.highway.getLength());
         this.nukeConsole(1);
 
         boolean canSwerveUp = (this.player.getLane() == 0 ? false : true);
