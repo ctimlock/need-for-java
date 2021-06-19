@@ -30,7 +30,7 @@ public class Input
     }
 
     /**
-     * Method to get user to press enter.
+     * Method to get user to press enter to proceed.
      */
     public static void acceptEmptyInput()
     {
@@ -41,8 +41,10 @@ public class Input
     /**
      * Method to request and pass back a user input as a Integer.
      * @return Returns the user's entered string as an Integer.
+     * @throws NumberFormatException
      */
     public static int acceptIntegerInput()
+    throws NumberFormatException
     {
         Scanner console = new Scanner(System.in);
         return Integer.parseInt(console.nextLine());

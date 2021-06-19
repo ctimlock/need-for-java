@@ -1,5 +1,8 @@
 /**
- * RoadTile
+ * Class which stores the information for a specific tile of the Need for Java highway.
+ * 
+ * @author Charlie Timlock
+ * @version ver1.0
  */
 public class RoadTile 
 {
@@ -8,6 +11,9 @@ public class RoadTile
     private int damage;
     private int fuelMod;
 
+    /**
+     * Default constructor that creates an object of the class Roadtile.
+     */
     public RoadTile()
     {
         tileType = "Road";
@@ -16,6 +22,13 @@ public class RoadTile
         fuelMod = 0;
     }
 
+    /**
+     * Non-default constructor that creates an object of the class Game.
+     * @param tileType The type of tile being created, as a String.
+     * @param icon The render icon of the tile being created, as a String.
+     * @param damage The damage done when landing on the tile, as an integer.
+     * @param fuelMod The change in fuel when landing on the tile, as an integer.
+     */
     public RoadTile(String tileType, String icon, int damage, int fuelMod)
     {
         this.tileType = tileType;
@@ -25,15 +38,8 @@ public class RoadTile
     }
 
     /**
-     * @return the fuelMod
-     */
-    public int getFuelMod() 
-    {
-        return fuelMod;
-    }
-
-    /**
-     * @return the damage
+     * Accessor method for the damage done when landing on the tile.
+     * @return The damage value as an integer.
      */
     public int getDamage() 
     {
@@ -41,7 +47,17 @@ public class RoadTile
     }
 
     /**
-     * @return the icon
+     * Accessor method for the fuel change done when landing on the tile.
+     * @return Fuel change value, as an integer.
+     */
+    public int getFuelMod() 
+    {
+        return fuelMod;
+    }
+
+    /**
+     * Accessor method for icon to render for a tile for the game display.
+     * @return The render icon of the tile, as a String.
      */
     public String getIcon() 
     {
@@ -49,7 +65,8 @@ public class RoadTile
     }
 
     /**
-     * @return the tileType
+     * Accessor method for the name/type of the tile.
+     * @return The type of tile, as a String.
      */
     public String getTileType() 
     {
@@ -57,15 +74,8 @@ public class RoadTile
     }
 
     /**
-     * @param fuelMod the fuelMod to set
-     */
-    public void setFuelMod(int fuelMod) 
-    {
-        this.fuelMod = fuelMod;
-    }
-
-    /**
-     * @param damage the damage to set
+     * Mutator method for the damage done when landing on the tile.
+     * @param damage The damage value as an integer.
      */
     public void setDamage(int damage) 
     {
@@ -73,53 +83,76 @@ public class RoadTile
     }
 
     /**
-     * @param icon the icon to set
+     * Mutator method for the damage done when landing on the tile.
+     * @param fuelMod Fuel change value, as an integer.
+     */
+    public void setFuelMod(int fuelMod) 
+    {
+        this.fuelMod = fuelMod;
+    }
+
+    /**
+     * Mutator method for icon to render for a tile for the game display.
+     * @param icon The render icon of the tile, as a String.
      */
     public void setIcon(String icon) 
     {
         this.icon = icon;
     }
 
+    /**
+     * Method which sets all values for the Road Tile to match an established template, depending on the String value that is passed in.
+     * Valid string types to pass in are "Road", "Fuel", "Roadblock", "Tyre Spikes", "Manhole", and "Border".
+     * Passing in an invalid string will set the tile to the default, which is "Road".
+     * @param newTileType
+     */
     public void setTileToObstacle(String newTileType)
     {
         String newIcon = "";
         int newDamage = 0;
         int newFuelMod = 0;
 
-        switch (newTileType)
+        switch (newTileType.toLowerCase())
         {
-            case "Road":
+            case "road":
                 newIcon = " ";
                 newDamage = 0;
                 newFuelMod = 0;
                 break;
 
-            case "Fuel":
+            case "fuel":
                 newIcon = "F";
                 newDamage = 0;
                 newFuelMod = 10;
                 break;
                 
-            case "Roadblock":
+            case "roadblock":
                 newIcon = "B";
                 newDamage = 20;
                 newFuelMod = 0;
                 break;
             
-            case "Tyre Spikes":
+            case "tyre Spikes":
                 newIcon = "S";
                 newDamage = 45;
                 newFuelMod = 0;
                 break;
                 
-            case "Manhole":
+            case "manhole":
                 newIcon = "O";
                 newDamage = 60;
                 newFuelMod = 0;
                 break;
             
-            case "Border":
+            case "border":
                 newIcon = ">";
+                newDamage = 0;
+                newFuelMod = 0;
+                break;
+
+            default:
+                newTileType = "Road";
+                newIcon = " ";
                 newDamage = 0;
                 newFuelMod = 0;
                 break;
@@ -132,11 +165,25 @@ public class RoadTile
     }
 
     /**
-     * @param tileType the tileType to set
+     * Mutator method for the name/type of the tile.
+     * @param tileType The type of tile, as a String.
      */
     public void setTileType(String tileType) 
     {
         this.tileType = tileType;
     }    
     
+    /**
+     * Method that returns the current state of the Road Tile.
+     * @return The current state of the Road Tile as a String.
+     */
+    public String toString()
+    {
+        String output = "";
+        output += "Type: " + tileType;
+        output += " Icon: " + icon;
+        output += " Damage Modifier: " + damage;
+        output += " Fuel Modifier: " + fuelMod;
+        return output;
+    }
 }

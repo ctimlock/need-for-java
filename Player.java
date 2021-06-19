@@ -1,5 +1,11 @@
 import java.io.IOException;
 
+/**
+ * Class which contains information about the current player and their current status.
+ *
+ * @author Charlie Timlock
+ * @version ver1.0.0
+ */
 public class Player 
 {
     public final String ICON = "@";
@@ -11,6 +17,9 @@ public class Player
     private String flavourText;
     private String name;
 
+    /**
+     * Default constructor that creates an object of the class Player.
+     */
     public Player()
     {
         vehicle = new Vehicle();
@@ -19,9 +28,20 @@ public class Player
         damage = 0;
         fuel = 0;
         flavourText = "";
+        name = "";
     }
 
-    public Player(Vehicle vehicle, int position, int lane, int damage, int fuel, String flavourText)
+    /**
+     * Non-default constructor that creates an object of the class Player.
+     * @param vehicle The player's vehicle, as an object of the class Vehicle.
+     * @param position The player's current position on the highway, as an integer.
+     * @param lane The player's current lane, as an integer.
+     * @param damage The player's current damage, as an integer.
+     * @param fuel The player's current fuel, as an integer.
+     * @param flavourText The most recent outcome of the player, as a String.
+     * @param name The player's name, as a String.
+     */
+    public Player(Vehicle vehicle, int position, int lane, int damage, int fuel, String flavourText, String name)
     {
         this.vehicle = vehicle;
         this.position = position;
@@ -29,18 +49,124 @@ public class Player
         this.damage = damage;
         this.fuel = fuel;
         this.flavourText = flavourText;
+        this.name = name;
     }
 
-    public void changeFuel(int fuelChange)
-    {
-        this.fuel = Math.min(this.fuel + fuelChange, this.vehicle.getTankSize());
-    }
-
-    public void changeDamage(int damage)
+    /**
+     * Method that modifies the player's current damage.
+     * @param damageChange The amount to modify the player's damage by.
+     */
+    public void changeDamage(int damageChange)
     {
         this.damage += damage;
     }
 
+    /**
+     * Method that modifies the player's current fuel.
+     * @param fuelChange The amount to modify the player's fuel by.
+     */
+    public void changeFuel(int fuelChange)
+    {
+        this.fuel = Math.min(this.fuel + fuelChange, this.vehicle.getTankSize());
+    }
+    
+    /**
+     * Accessor method to retrieve the current damage of the player.
+     * @return The damage, returned as an integer.
+     */
+    public int getDamage() 
+    {
+        return damage;
+    }
+
+    /** Accessor method to retrieve the most recent event of the player.
+     * @return The event as a String. 
+     */
+    public String getFlavourText() 
+    {
+        return flavourText;
+    }
+
+    /**
+     * Accessor method to retrieve the fuel level of the player.
+     * @return The fuel, returned as an integer.
+     */
+    public int getFuel() 
+    {
+        return fuel;
+    }
+
+
+    /**
+     * Accessor method to retrieve the current lane of the player.
+     * @return The lane, returned as an integer.
+     */
+    public int getLane() 
+    {
+        return lane;
+    }
+
+    /**
+     * Accessor method to get the name of the player.
+     * @return The name, as a String.
+     */
+    public String getName() 
+    {
+        return name;
+    }
+
+    /**
+     * Accessor method to retrieve the horizontal position of the player.
+     * @return The position, returned as an integer.
+     */
+    public int getPosition() 
+    {
+        return position;
+    }
+
+    /**
+     * Method that returns a string that describes the player's current progress in the game.
+     * @return The player's current game progress, as a String.
+     */
+    public String getStatus()
+    {
+        return "Damage: " + damage + "/" + this.vehicle.getHitPoints() + "     Fuel: " + fuel + "/" + this.vehicle.getTankSize() + "     Distance: " + position;
+    }
+
+    /**
+     * Accessor method to retrieve the player's vehicle.
+     * @return The player's vehicle, as an object of the class Vehicle.
+     */
+    public Vehicle getVehicle() 
+    {
+        return vehicle;
+    }
+
+    /**
+     * Method to check whether the player has died in their game.
+     * @return Returns true when the player has died.
+     */
+    public Boolean hasDied()
+    {
+        return (this.fuel <= 0 || this.damage >= this.vehicle.getHitPoints());
+    }
+
+    /**
+     * Method that relocates the player within the highway.
+     * @param horizontal How many tiles to move the player horizontally, as an int.
+     * @param vertical How many tiles to move the player vertically, as an int.
+     */
+    public void movePlayer(int horizontal, int vertical)
+    {
+        this.position += horizontal;
+        this.lane += vertical;
+    }
+
+    /**
+     * Method that lets the player select the vehicle they'd like to use for the game.
+     * @throws IOException
+     * @throws NumberFormatException
+     */
     public void selectVehicle()
     throws IOException, NumberFormatException
     {
@@ -104,93 +230,6 @@ public class Player
         Input.acceptEmptyInput();
     }
 
-
-    
-    /**
-     * Accessor method to retrieve the current damage of the player.
-     * @return The damage, returned as an integer.
-     */
-    public int getDamage() 
-    {
-        return damage;
-    }
-
-    /**
-     * @return the flavourText
-     */
-    public String getFlavourText() 
-    {
-        return flavourText;
-    }
-
-    /**
-     * Accessor method to retrieve the fuel level of the player.
-     * @return The fuel, returned as an integer.
-     */
-    public int getFuel() 
-    {
-        return fuel;
-    }
-
-
-    /**
-     * Accessor method to retrieve the current lane of the player.
-     * @return The lane, returned as an integer.
-     */
-    public int getLane() 
-    {
-        return lane;
-    }
-    
-
-    public int[] getLocation()
-    {
-        int[] location = {this.position, this.lane};
-        return location;
-    } 
-
-    /**
-     * @return the name
-     */
-    public String getName() 
-    {
-        return name;
-    }
-
-    /**
-     * Accessor method to retrieve the position of the player.
-     * @return The position, returned as an integer.
-     */
-    public int getPosition() 
-    {
-        return position;
-    }
-
-    public String getStatus()
-    {
-        return "Damage: " + damage + "/" + this.vehicle.getHitPoints() + "     Fuel: " + fuel + "/" + this.vehicle.getTankSize() + "     Distance: " + position;
-    }
-
-    /**
-     * Accessor method to retrieve the player's vehicle.
-     * @return The player's vehicle, as an object of the class Vehicle.
-     */
-    public Vehicle getVehicle() 
-    {
-        return vehicle;
-    }
-
-    public Boolean hasDied()
-    {
-        return (this.fuel <= 0 || this.damage >= this.vehicle.getHitPoints());
-    }
-
-    public void movePlayer(int horizontal, int vertical)
-    {
-        this.position += horizontal;
-        this.lane += vertical;
-    }
-
     /**
      * Mutator method that sets the current damage of the player.
      * @param damage The damage to set, as an integer.
@@ -200,8 +239,8 @@ public class Player
         this.damage = damage;
     }
 
-    /**
-     * @param flavourText the flavourText to set
+    /** Mutator method to set the most recent event of the player.
+     * @param flavourText The event as a String.
      */
     public void setFlavourText(String flavourText) 
     {
@@ -228,7 +267,8 @@ public class Player
     }
 
     /**
-     * @param name the name to set
+     * Mutator method to set the player's name.
+     * @param name The name to set, as a String.
      */
     public void setName(String name)
     {
@@ -244,6 +284,10 @@ public class Player
         this.position = position;
     }
 
+    /**
+     * Method that randomly places a player in a lane on the highway.
+     * @param lanes The number of lanes on the highway.
+     */
     public void setStartingLane(int lanes)
     {
         this.lane = (int)(Math.random() * lanes);
@@ -256,5 +300,21 @@ public class Player
     public void setVehicle(Vehicle vehicle) 
     {
         this.vehicle = vehicle;
+    }
+
+    /**
+     * Method that returns the state of the current Player object as a String.
+     */
+    public String toString()
+    {
+        String output = "";
+        output += "Name: " + name;
+        output += " Position: " + position;
+        output += " Lane: " + lane;
+        output += " Damage: " + damage;
+        output += " Fuel: " + fuel;
+        output += " Flavour Text: " + flavourText;
+        output += " Vehicle: " + vehicle.toString();
+        return output;
     }
 }

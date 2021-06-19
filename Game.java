@@ -1,3 +1,10 @@
+/**
+ * Class which runs the Need for Java game, and handles player interaction.
+ *
+ * @author Charlie Timlock
+ * @version ver1.0.0
+ */
+
 public class Game
 {
     private Player player;
@@ -15,8 +22,19 @@ public class Game
     }
 
     /**
-     * 
-     * @param difficulty
+     * Non-default constructor that creates an object of the class Game.
+     * @param player The player. as an object of the class Player.
+     * @param highway The highway, as an object of the class Highway.
+     */
+    public Game(Player player, Highway highway)
+    {
+        this.player = player;
+        this.highway = highway;
+    }
+
+    /**
+     * Applies a selected difficulty to the current game.
+     * @param difficulty The difficulty selection as an integer. 1 = Easy, 2 = Moderate, 3 = Hard.
      */
     public void applyDifficulty(int difficulty)
     {
@@ -81,6 +99,20 @@ public class Game
         this.pushConsole(25);
     }
 
+    /**
+     * Method that calculates and applies the effect of an obstacle on the player.
+     */
+    public void applyEffect()
+    {
+        int x = this.player.getPosition();
+        int y = this.player.getLane();
+        this.player.changeFuel(this.highway.getSpecificTileFuelMod(x, y));
+        this.player.changeDamage(this.highway.getSpecificTileDamage(x, y));
+    }
+
+    /**
+     * Method that executes the "Boost" move.
+     */
     public void boost()
     {
         int x = this.player.getVehicle().getBoostSpeed();
@@ -90,19 +122,24 @@ public class Game
         for (int i = 0; i < x; i++) 
         {
             this.player.movePlayer(1, 0);
-            this.endTurn();
+            this.finalizeTurn();
         }
     }
 
-    public void calculateEffect()
+    /**
+     * Method that displays the current state of the game in the terminal.
+     */
+    public void display()
     {
-        int x = this.player.getPosition();
-        int y = this.player.getLane();
-        this.player.changeFuel(this.highway.getSpecificTileFuelMod(x, y));
-        this.player.changeDamage(this.highway.getSpecificTileDamage(x, y));
+        System.out.println(this.player.toString());
+        System.out.println(this.highway.toString());
     }
 
-    public void endTurn()
+    /**
+     * Method that finalizes a player's turn.
+     * Will check if the player has won, apply any obstacle outcomes, check if the player has lost, and then set the flavour text for the most recent event, in that order.
+     */
+    public void finalizeTurn()
     {
         if (this.hasWon())
         {
@@ -111,7 +148,7 @@ public class Game
             System.out.println(this.player.getFlavourText());
             System.exit(0);
         }
-        this.calculateEffect();
+        this.applyEffect();
         if (this.hasLost())
         {
             this.printOutcomeToFile();
@@ -123,7 +160,8 @@ public class Game
     }
 
     /**
-     * @return the highway
+     * Accessor method that returns the game's highway.
+     * @return The highway as an object of the class Highway.
      */
     public Highway getHighway() 
     {
@@ -132,13 +170,16 @@ public class Game
 
     /**
      * Method that returns the player.
-     * @return The player class Player.
+     * @return The player as an object of the class Player.
      */
     public Player getPlayer() 
     {
         return player;
     }
 
+    /**
+     * Method that requests and sets the player's name. Also prints the in-terminal intro text.
+     */
     public void getPlayerName() 
     {
         System.out.print("24/7 NEWS RADIO: \"We're coming to you with a breaking news story.\"   (Press Enter to Continue)");
@@ -174,6 +215,10 @@ public class Game
         Input.acceptEmptyInput();
     }
 
+    /**
+     * Method that checks whether the player has lost, and will prep the game to finish if true.
+     * @return Returns true if the player has lost.
+     */
     public boolean hasLost()
     {
         if(this.player.hasDied())
@@ -195,6 +240,11 @@ public class Game
         }
     }
 
+    /**
+     * Method that checks whether the player has won, and will prep the game to finish if true.
+     * @return Returns true if the player has won.
+     * @return
+     */
     public boolean hasWon()
     {
         if (this.player.getPosition() >= this.highway.getLength())
@@ -215,15 +265,10 @@ public class Game
     {
         Game game = new Game();
         game.startGame();
-        game.player.setStartingLane(game.highway.getHeight());
-        while (!game.player.hasDied())
-        {
-        game.takeTurn();
-        }
     }
 
     /**
-     * Method that increases the position of the player's player by one space.
+     * Method that increases the position of the player's player by one space, and deducts the fuel penalty.
      */
     public void moveForward()
     {
@@ -231,12 +276,26 @@ public class Game
         this.player.changeFuel(-1);
     }
 
+    /**
+     * Method that prints the outcome of the game to the output file.
+     */
     public void printOutcomeToFile()
     {
         FileIO writer = new FileIO(OUTPUT_FILE);
-        writer.writeFile("\n" + this.player.getFlavourText());
+        try
+        {
+            writer.appendFile("\n" + this.player.getFlavourText());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error, could not save outcome to file.");
+        }
     }
 
+    /**
+     * Method that inserts a number of empty lines in the terminal.
+     * @param lines The number of empty lines to print.
+     */
     public void pushConsole(int lines)
     {
         for (int i = 0; i < lines; i++) 
@@ -281,38 +340,10 @@ public class Game
         System.out.println(this.highway.getLaneMarkers(renderLength, '='));
     }
 
-    public void setCurrentFlavourText()
-    {
-        String output = "";
-        int x = this.player.getPosition();
-        int y = this.player.getLane();
-
-        switch (this.highway.getSpecificTileTileType(x, y)) 
-        {
-            case "Road":
-                output = "";
-                break;
-
-            case "Fuel":
-                output = "You picked up " + this.highway.getSpecificTileFuelMod(x, y) + " fuel.";
-                break;
-                
-            case "Roadblock":
-                output = "Careful, you hit a roadblock. You took " + this.highway.getSpecificTileDamage(x, y) + " damage.";
-                break;
-            
-            case "Tyre Spikes":
-                output = "Ouch, you ran over some tyre spikes. You took " + this.highway.getSpecificTileDamage(x, y) + " damage.";
-                break;
-                
-            case "Manhole":
-                output = "OOFT, you hit an open manhole! You took " + this.highway.getSpecificTileDamage(x, y) + " damage!";
-                break;
-        }
-        this.player.setFlavourText(output);
-    }
-
-    public void setDifficulty()
+    /**
+     * Method that requests and then sets the player's difficulty selection.
+     */
+    public void selectDifficulty()
     {
         int difficulty = 0;
         while (difficulty == 0)
@@ -361,7 +392,42 @@ public class Game
     }
 
     /**
-     * @param highway the highway to set
+     * Method that updates the most recent event of the player, for display and printing to file.
+     */
+    public void setCurrentFlavourText()
+    {
+        String output = "";
+        int x = this.player.getPosition();
+        int y = this.player.getLane();
+
+        switch (this.highway.getSpecificTileTileType(x, y)) 
+        {
+            case "Road":
+                output = "";
+                break;
+
+            case "Fuel":
+                output = "You picked up " + this.highway.getSpecificTileFuelMod(x, y) + " fuel.";
+                break;
+                
+            case "Roadblock":
+                output = "Careful, you hit a roadblock. You took " + this.highway.getSpecificTileDamage(x, y) + " damage.";
+                break;
+            
+            case "Tyre Spikes":
+                output = "Ouch, you ran over some tyre spikes. You took " + this.highway.getSpecificTileDamage(x, y) + " damage.";
+                break;
+                
+            case "Manhole":
+                output = "OOFT, you hit an open manhole! You took " + this.highway.getSpecificTileDamage(x, y) + " damage!";
+                break;
+        }
+        this.player.setFlavourText(output);
+    }
+
+    /**
+     * Mutator method to set the Game's highway.
+     * @param highway The highway, as an object of the class Highway.
      */
     public void setHighway(Highway highway) 
     {
@@ -369,7 +435,7 @@ public class Game
     }
 
     /**
-     * Mutator method to set the player.
+     * Mutator method to set the game's player.
      * @param player The player to set, passed in as an object of the class Player. 
      */
     public void setPlayer(Player player) 
@@ -377,6 +443,9 @@ public class Game
         this.player = player;
     }
 
+    /**
+     * Method that starts the game.
+     */
     public void startGame()
     {
         this.pushConsole(25);
@@ -402,7 +471,13 @@ public class Game
         }
 
         this.pushConsole(25);
-        this.setDifficulty();
+        this.selectDifficulty();
+        
+        this.player.setStartingLane(this.highway.getHeight());
+        while (!this.player.hasDied())
+        {
+        this.takeTurn();
+        }
 
     }
 
@@ -426,6 +501,9 @@ public class Game
         }
     }
 
+    /**
+     * Method that requests and executes a player's turn, including updating the display.
+     */
     public void takeTurn()
     {
         // push the existing graphics.
@@ -516,6 +594,6 @@ public class Game
         }
 
         // Perform end of turn checks.
-        this.endTurn();
+        this.finalizeTurn();
     }
 }
