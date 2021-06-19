@@ -72,7 +72,6 @@ public class Game
                 lengthMax = 15;
                 fuelLimiter = 1.0;
                 obstacles = 12;
-                choice = "Easy";
                 break;
         }
 
