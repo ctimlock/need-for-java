@@ -11,6 +11,7 @@ public class Game
     private Highway highway;
     private final int RENDER_DISTANCE = 10;
     private final String OUTPUT_FILE = "output.txt";
+    private final String VEHICLES_FILE = "vehicles.txt"; 
 
     /**
      * Default constructor that creates an object of the class Game.
@@ -94,6 +95,7 @@ public class Game
         System.out.println("It's " + this.highway.getLength() + " KM to make it to the border.");
         System.out.println("There's about " + this.player.getFuel() + " litres of fuel in the tank.");
         System.out.println("Good luck. Don't get caught.");
+        this.pushConsole(2);
         System.out.println("Press enter to start.");
         Input.acceptStringInput();
         this.pushConsole(25);
@@ -145,7 +147,10 @@ public class Game
         {
             this.printOutcomeToFile();
             this.pushConsole(25);
+            System.out.println("Game Over");
+            this.pushConsole(2);
             System.out.println(this.player.getFlavourText());
+            this.pushConsole(4);
             System.exit(0);
         }
         this.applyEffect();
@@ -153,7 +158,10 @@ public class Game
         {
             this.printOutcomeToFile();
             this.pushConsole(25);
+            System.out.println("Game Over");
+            this.pushConsole(2);
             System.out.println(this.player.getFlavourText());
+            this.pushConsole(4);
             System.exit(0);
         }
         this.setCurrentFlavourText();
@@ -191,6 +199,7 @@ public class Game
         System.out.print("24/7 NEWS RADIO: \"...\"");
         Input.acceptEmptyInput();
         System.out.println("24/7 NEWS RADIO: \"We've just gotten confirmation of the identity of the driver...\"");
+        this.pushConsole(1);
         System.out.println("(Enter your name)");
         
         String name = "";
@@ -202,6 +211,7 @@ public class Game
             {
                 this.player.setName(name);
                 flag = false;
+                this.pushConsole(1);
                 System.out.println("24/7 NEWS RADIO: \"Yes, it appears that the driver of the vehicle is none other than " + name + ", the notorious fugitive.\"");
                 this.pushConsole(1);
             }
@@ -355,6 +365,7 @@ public class Game
                 try 
                 {
                 System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
+                this.pushConsole(2);
                 choice = Character.toLowerCase(Input.acceptCharInput(0));
                 flag = false;
                 } 
@@ -389,6 +400,77 @@ public class Game
             }
         }
         this.applyDifficulty(difficulty);
+    }
+
+    /**
+     * Method that lets the player select the vehicle they'd like to use for the game.
+     */
+    public void selectVehicle()
+    {
+        FileIO reader = new FileIO(VEHICLES_FILE);
+        try 
+        {
+            System.out.println("24/7 NEWS RADIO: \"Our eyes in the sky have just informed us of the vehicle being driven...\"");
+
+            String[] vehicleStrings = reader.readFile().split("~");
+            String[] vehicleNames = new String[vehicleStrings.length];
+
+            for (int i = 0; i < vehicleStrings.length; i++) 
+            {
+                String[] attributes = vehicleStrings[i].split(",");
+                vehicleNames[i] = attributes[0];
+                String boostSpeed = attributes[1];
+                String tankSize = attributes[2];
+                String hitPoints = attributes[3];
+
+                String output = "";
+                String vowels = "aeiou";
+                char firstLetter = vehicleNames[i].charAt(0);
+                String pre = (vowels.indexOf(Character.toLowerCase(firstLetter)) == -1 ? "A " : "An ");
+                output += ("\"" + pre + vehicleNames[i] + "\"");
+                output += (" (Boost Speed: " + boostSpeed);
+                output += (" Tank Size: " + tankSize);
+                output += (" Hit Points: " + hitPoints + ")");
+                System.out.println(output);
+            }
+
+            this.pushConsole(1);
+    
+            for (int i = 0; i < vehicleNames.length; i++) 
+            {
+                System.out.println("Enter " + (i + 1) + " to select the " + vehicleNames[i]);
+            }
+
+            this.pushConsole(1);
+
+            int choice = -1;
+            while (choice < 1 || choice > vehicleNames.length)
+            {
+                try 
+                {
+                    choice = Input.acceptIntegerInput();
+                } 
+                catch (Exception e) 
+                {
+                    System.out.println("Error, invalid selection. Try again.");
+                }
+            }
+
+            this.player.setVehicle(vehicleStrings[choice - 1]);
+            this.pushConsole(1);    
+            System.out.print("24/7 NEWS RADIO: \"Yes, it appears that " + this.player.getName());
+            System.out.print(" is attempting to outrun police with a stolen ");
+            System.out.println(vehicleNames[choice - 1] + "\"");
+    
+            System.out.println("");
+            System.out.println("Press Enter to turn off the Radio");
+            Input.acceptEmptyInput();
+
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Error, could not read file correctly.");
+        }
     }
 
     /**
@@ -462,7 +544,7 @@ public class Game
         this.pushConsole(25);
         try
         {
-            this.player.selectVehicle();
+            this.selectVehicle();
         }
         catch (Exception e)
         {

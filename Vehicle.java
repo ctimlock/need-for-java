@@ -6,7 +6,6 @@
  */
 public class Vehicle 
 {
-    private final String fileName = "vehicles.txt"; 
     private String type;
     private int boostSpeed;
     private int tankSize;
@@ -46,15 +45,6 @@ public class Vehicle
     public int getBoostSpeed() 
     {
         return boostSpeed;  
-    }
-
-    /**
-     * Accessor method for the name of the file that stores the vehicle information.
-     * @return The file name, as a String.
-     */
-    public String getFileName() 
-    {
-        return fileName;
     }
 
     /**
