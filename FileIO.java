@@ -13,11 +13,18 @@ public class FileIO
 {
     private String fileName;
 
+    /**
+     * Default constructor that creates an object of the class FileIO.
+     */
     public FileIO()
     {
         fileName = "";
     }
 
+    /**
+     * Non-default constructor that creates an object of the class FileIO.
+     * @param fileName The name of the file to be accessed.
+     */
     public FileIO(String fileName)
     {
         this.fileName = fileName;
@@ -26,7 +33,7 @@ public class FileIO
     /**
      * Method which accepts a string, and appends it to a file.
      * @param inputString The string to be appended.
-     * @throws IOException
+     * @throws IOException Thrown if file can not be opened or closed correctly.
      */
     public void appendFile(String inputString)
     throws IOException
@@ -53,7 +60,7 @@ public class FileIO
     /**
      * Method which reads a specified file and returns the contents, delmited per line with a tilde ("~").
      * @return Returns the contents of the file as a String.
-     * @throws IOException
+     * @throws IOException Thrown if file can not be opened or closed correctly.
      */
     public String readFile()
     throws IOException
