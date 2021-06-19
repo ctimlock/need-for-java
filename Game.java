@@ -91,7 +91,6 @@ public class Game
         this.player.changeFuel(9999);
 
         this.pushConsole(25);
-        System.out.println("You have chosen " + choice + ".");
         System.out.println("It's " + this.highway.getLength() + " KM to make it to the border.");
         System.out.println("There's about " + this.player.getFuel() + " litres of fuel in the tank.");
         System.out.println("Good luck. Don't get caught.");
@@ -361,10 +360,12 @@ public class Game
     }
 
     /**
-     * Method that requests and then sets the player's difficulty selection.
+     * Method that requests the player's difficulty selection.
+     * @return Returns the selection as an int.
      */
-    public void selectDifficulty()
+    public int selectDifficulty()
     {
+        this.pushConsole(25);
         int difficulty = 0;
         while (difficulty == 0)
         {
@@ -409,13 +410,13 @@ public class Game
                     break;
             }
         }
-        this.applyDifficulty(difficulty);
+        return difficulty;
     }
 
     /**
      * Method that lets the player select the vehicle they'd like to use for the game.
      */
-    public void selectVehicle()
+    public void selectVehicle(int difficulty)
     {
         FileIO reader = new FileIO(VEHICLES_FILE);
         try 
@@ -430,7 +431,24 @@ public class Game
                 String[] attributes = vehicleStrings[i].split(",");
                 vehicleNames[i] = attributes[0];
                 String boostSpeed = attributes[1];
-                String tankSize = attributes[2];
+                int tankSize = Integer.parseInt(attributes[2]);
+                switch (difficulty) 
+                {
+                    case 1:
+                        tankSize *= 1;
+                        break;
+                
+                    case 2:
+                        tankSize *= 0.8;
+                        break;
+            
+                    case 3:
+                        tankSize *= 0.5;
+                        break;
+                
+                    default:
+                        break;
+                }
                 String hitPoints = attributes[3];
 
                 String output = "";
@@ -548,13 +566,15 @@ public class Game
         System.out.println("Press Enter to begin.");
         Input.acceptEmptyInput();
 
+        int difficulty = this.selectDifficulty();
+
         this.pushConsole(25);
         this.getPlayerName();
 
         this.pushConsole(25);
         try
         {
-            this.selectVehicle();
+            this.selectVehicle(difficulty);
         }
         catch (Exception e)
         {
@@ -562,9 +582,12 @@ public class Game
             System.exit(0);
         }
 
+        this.applyDifficulty(difficulty);
+
         this.pushConsole(25);
-        this.selectDifficulty();
         
+        
+
         this.player.setStartingLane(this.highway.getHeight());
         while (!this.player.hasDied())
         {
