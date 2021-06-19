@@ -6,6 +6,9 @@
  */
 public class Player 
 {
+    /**
+     * The icon used to represent the player in the game.
+     */
     public final String ICON = "@";
     private Vehicle vehicle;
     private int position;
@@ -242,8 +245,8 @@ public class Player
 
     /**
      * Mutator method that sets the vehicle of the player.
-     * @param string A string that contains the vehicle type, boost speed, tank size, and hit points separated by commas.
-     * @throws 
+     * @param vehicleString A string that contains the vehicle type, boost speed, tank size, and hit points separated by commas.
+     * @throws IndexOutOfBoundsException Will throw if there are not enough vehicle attributes in the string.
      */
     public void setVehicle(String vehicleString)
     throws IndexOutOfBoundsException

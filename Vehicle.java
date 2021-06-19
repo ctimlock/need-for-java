@@ -49,7 +49,7 @@ public class Vehicle
 
     /**
      * Accessor method to retrieve the hit point max of the vehicle object.
-     * @returnTthe hit points, as an integer.
+     * @return The hit points, as an integer.
      */
     public int getHitPoints() 
     {

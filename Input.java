@@ -41,7 +41,7 @@ public class Input
     /**
      * Method to request and pass back a user input as a Integer.
      * @return Returns the user's entered string as an Integer.
-     * @throws NumberFormatException
+     * @throws NumberFormatException Will throw if the entered string can not be parsed as an integer.
      */
     public static int acceptIntegerInput()
     throws NumberFormatException

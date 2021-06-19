@@ -104,7 +104,7 @@ public class RoadTile
      * Method which sets all values for the Road Tile to match an established template, depending on the String value that is passed in.
      * Valid string types to pass in are "Road", "Fuel", "Roadblock", "Tyre Spikes", "Manhole", and "Border".
      * Passing in an invalid string will set the tile to the default, which is "Road".
-     * @param newTileType
+     * @param newTileType The tile type being set.
      */
     public void setTileToObstacle(String newTileType)
     {

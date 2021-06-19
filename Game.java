@@ -257,7 +257,6 @@ public class Game
     /**
      * Method that checks whether the player has won, and will prep the game to finish if true.
      * @return Returns true if the player has won.
-     * @return
      */
     public boolean hasWon()
     {
@@ -275,6 +274,11 @@ public class Game
         }
     }
 
+    /**
+     * The method to begin the Need for Java program.
+     *
+     * @param args An array of Strings representing command line arguments.
+     */
     public static void main(String[] args) 
     {
         Game game = new Game();
@@ -410,6 +414,7 @@ public class Game
 
     /**
      * Method that lets the player select the vehicle they'd like to use for the game.
+     * @param difficulty The player's selected difficulty rating, as an integer.
      */
     public void selectVehicle(int difficulty)
     {
