@@ -21,7 +21,7 @@
 
 - [x] Input
 
-- [ ] Player
+- [x] Player
 
 - [x] RoadTile
 
@@ -45,17 +45,17 @@
 
 ### Game
 
-- [ ] One default constructor
+- [x] One default constructor
 
-- [ ] At least one non-default constructor (if the class has fields)
+- [x] At least one non-default constructor (if the class has fields)
 
-- [ ] Accessors for each field
+- [x] Accessors for each field
 
-- [ ] Mutators for each field
+- [x] Mutators for each field
 
-- [ ] A display/toString method.
+- [x] A display/toString method.
 
-- [ ] APIDoc Comments for all methods and fields
+- [x] APIDoc Comments for all methods and fields
 
 ### Highway
 

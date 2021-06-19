@@ -239,7 +239,7 @@ public class Player
         this.damage = damage;
     }
 
-    /** Mutator method to retrieve the most recent event of the player.
+    /** Mutator method to set the most recent event of the player.
      * @param flavourText The event as a String.
      */
     public void setFlavourText(String flavourText) 
