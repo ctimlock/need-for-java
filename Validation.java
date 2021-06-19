@@ -1,5 +1,5 @@
 /**
- * Class which validates input from the user.
+ * Class which validates strings for content.
  *
  * @author Charlie Timlock
  * @version ver1.0.0
@@ -14,16 +14,6 @@ public class Validation
     private Validation()
     {
 
-    }
-
-    /**
-     * Static method that validates that a given string is not either empty or only space characters.
-     * @param input The string to be validated, passed in as a String.
-     * @return Returns True when the input string is not either empty or only space characters.
-     */
-    public static boolean isNotBlank(String input)
-    {
-        return (input.isEmpty() || input.isBlank() ? false : true);
     }
 
     /**
