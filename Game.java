@@ -247,7 +247,6 @@ public class Game
         else if(this.player.hasRunOutOfFuel())
         {
             int x = this.player.getPosition();
-            int y = this.player.getLane();
             int distance = x;
 
             String outcome = this.player.getName() + " drove " + distance + " kilometers before their ";
@@ -602,7 +601,10 @@ public class Game
         // push the existing graphics.
         this.pushConsole(25);
 
-        // Render the highway and player status.
+        // Render legend, the highway, and player status.
+
+        System.out.println("F: 10 Fuel   B: Roadblock (20 dmg)   S: Tyre Spikes (45 dmg)   O: Open Manhole (60 dgm)");
+        this.pushConsole(1);
         this.renderHighway();
         this.pushConsole(1);
         System.out.println(this.player.getFlavourText());
