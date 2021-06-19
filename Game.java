@@ -2,7 +2,8 @@ public class Game
 {
     private Player player;
     private Highway highway;
-    private final int RENDER_DISTANCE = 45;
+    private final int RENDER_DISTANCE = 10;
+    private final String OUTPUT_FILE = "output.txt";
 
     /**
      * Default constructor that creates an object of the class Game.
@@ -83,11 +84,14 @@ public class Game
     public void boost()
     {
         int x = this.player.getVehicle().getBoostSpeed();
+        // I have changed the boost to give a fuel discount. This makes boosting useful, when possible.
+        // Spec implementation is this.player.changeFuel(-x * 3);
+        this.player.changeFuel((int)(-x * .75));
         for (int i = 0; i < x; i++) 
         {
             this.player.movePlayer(1, 0);
+            this.endTurn();
         }
-        this.player.changeFuel(-x * 3);
     }
 
     public void calculateEffect()
@@ -100,9 +104,21 @@ public class Game
 
     public void endTurn()
     {
-        this.hasWon();
+        if (this.hasWon())
+        {
+            this.printOutcomeToFile();
+            this.pushConsole(25);
+            System.out.println(this.player.getFlavourText());
+            System.exit(0);
+        }
         this.calculateEffect();
-        this.hasLost();
+        if (this.hasLost())
+        {
+            this.printOutcomeToFile();
+            this.pushConsole(25);
+            System.out.println(this.player.getFlavourText());
+            System.exit(0);
+        }
         this.setCurrentFlavourText();
     }
 
@@ -113,7 +129,6 @@ public class Game
     {
         return this.highway;
     }
-
 
     /**
      * Method that returns the player.
@@ -159,22 +174,40 @@ public class Game
         Input.acceptEmptyInput();
     }
 
-    public void hasLost()
+    public boolean hasLost()
     {
         if(this.player.hasDied())
         {
-            System.out.println("Sucked in idiot! You lose.");
-            // TODO: death actions.
+            int x = this.player.getPosition();
+            int y = this.player.getLane();
+            String finisher = this.highway.getSpecificTileTileType(x, y);
+            int distance = Math.min(this.highway.getLength(), x);
+
+            String outcome = this.player.getName() + " drove " + distance + " kilometers before the ";
+            outcome += finisher.toLowerCase() + " they ran into destroyed their ";
+            outcome += this.player.getVehicle().getType() + ", after which they were caught by the police.";
+            this.player.setFlavourText(outcome);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
-
-    public void hasWon()
+    public boolean hasWon()
     {
         if (this.player.getPosition() >= this.highway.getLength())
         {
-            System.out.println("Congratulations! You win.");
-            // TODO: Add more stuff.
+            String outcome = this.player.getName() + " drove " + this.highway.getLength();
+            outcome += " kilometers in their " + this.player.getVehicle().getType();
+            outcome += " to outrun the cops, and made it across the border.";
+            this.player.setFlavourText(outcome);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -196,6 +229,12 @@ public class Game
     {
         this.player.movePlayer(1, 0);
         this.player.changeFuel(-1);
+    }
+
+    public void printOutcomeToFile()
+    {
+        FileIO writer = new FileIO(OUTPUT_FILE);
+        writer.writeFile("\n" + this.player.getFlavourText());
     }
 
     public void pushConsole(int lines)

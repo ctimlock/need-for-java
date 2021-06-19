@@ -68,11 +68,13 @@ public class Player
             int hitPoints = vehicleList[i].getHitPoints();
             char firstLetter = vehicleList[i].getType().charAt(0);
             String pre = (vowels.indexOf(Character.toLowerCase(firstLetter)) == -1 ? "A " : "An ");
-            System.out.print("\"" + pre + type + "\"");
+            System.out.println("\"" + pre + type + "\"");
             System.out.print("(Boost Speed: " + boostSpeed);
             System.out.print(" Tank Size: " + tankSize);
-            System.out.println(" Hit Points: " + hitPoints);
+            System.out.println(" Hit Points: " + hitPoints + ")");
         }
+
+        System.out.println("");
 
         for (int i = 0; i < vehicleList.length; i++) 
         {

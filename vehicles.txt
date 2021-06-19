@@ -1,5 +1,5 @@
-Motorcycle,4,100,30
-Car,3,120,50
-Garbage Truck,2,150,100
+Ducati Panigali,7,40,30
+Honda Civic,3,80,100
 Fire Engine,2,60,200
-Aston Martin DB9,4,100,40
+Aston Martin DB9,5,70,90
+Tractor,2,20,500
