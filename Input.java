@@ -30,16 +30,6 @@ public class Input
     }
 
     /**
-     * Method to request and pass back a user input as a Double.
-     * @return Returns the user's entered string as a Double.
-     */
-    public static double acceptDoubleInput()
-    {
-        Scanner console = new Scanner(System.in);
-        return Double.parseDouble(console.nextLine());
-    }
-
-    /**
      * Method to get user to press enter.
      */
     public static void acceptEmptyInput()
