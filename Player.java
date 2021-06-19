@@ -141,12 +141,21 @@ public class Player
     }
 
     /**
-     * Method to check whether the player has died in their game.
+     * Method to check whether the player has destroyed their vehicle in their game.
      * @return Returns true when the player has died.
      */
     public Boolean hasDied()
     {
-        return (this.fuel <= 0 || this.damage >= this.vehicle.getHitPoints());
+        return (this.damage >= this.vehicle.getHitPoints());
+    }
+
+    /**
+     * Method to check whether the player has run out of fuel in their game.
+     * @return Returns true when the player has run out of fuel.
+     */
+    public Boolean hasRunOutOfFuel()
+    {
+        return (this.fuel <= 0);
     }
 
     /**

@@ -236,11 +236,22 @@ public class Game
             int x = this.player.getPosition();
             int y = this.player.getLane();
             String finisher = this.highway.getSpecificTileTileType(x, y);
-            int distance = Math.min(this.highway.getLength(), x);
+            int distance =  x;
 
             String outcome = this.player.getName() + " drove " + distance + " kilometers before the ";
             outcome += finisher.toLowerCase() + " they ran into destroyed their ";
             outcome += this.player.getVehicle().getType() + ", after which they were caught by the police.";
+            this.player.setFlavourText(outcome);
+            return true;
+        }
+        else if(this.player.hasRunOutOfFuel())
+        {
+            int x = this.player.getPosition();
+            int y = this.player.getLane();
+            int distance = x;
+
+            String outcome = this.player.getName() + " drove " + distance + " kilometers before their ";
+            outcome += this.player.getVehicle().getType() + " ran out of fuel, after which they were caught by the police.";
             this.player.setFlavourText(outcome);
             return true;
         }
@@ -365,7 +376,7 @@ public class Game
                 try 
                 {
                 System.out.println("Choose your difficulty: Easy, Moderate, or Hard.");
-                this.pushConsole(2);
+                this.pushConsole(1);
                 choice = Character.toLowerCase(Input.acceptCharInput(0));
                 flag = false;
                 } 
