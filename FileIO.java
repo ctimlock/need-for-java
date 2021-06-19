@@ -24,6 +24,24 @@ public class FileIO
     }
 
     /**
+     * Method which accepts a string, and appends it to a file.
+     * @param inputString The string to be appended.
+     * @throws IOException
+     */
+    public void appendFile(String inputString)
+    throws IOException
+    {
+        try (FileWriter writer = new FileWriter(fileName, true))
+        {
+            writer.append(inputString);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    /**
      * Accessor method to retrieve the file name.
      * @return The File name, returned as a string.
      */
@@ -84,23 +102,5 @@ public class FileIO
     public void setFileName(String fileName)
     {
         this.fileName = fileName;
-    }
-
-    /**
-     * Method which accepts a string, and appends it to a file.
-     * @param inputString The string to be appended.
-     * @throws IOException
-     */
-    public void appendFile(String inputString)
-    throws IOException
-    {
-        try (FileWriter writer = new FileWriter(fileName, true))
-        {
-            writer.append(inputString);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
     }
 }
