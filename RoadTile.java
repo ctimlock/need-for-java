@@ -47,7 +47,7 @@ public class RoadTile
     }
 
     /**
-     * Accessor method for the damage done when landing on the tile.
+     * Accessor method for the fuel change done when landing on the tile.
      * @return Fuel change value, as an integer.
      */
     public int getFuelMod() 
