@@ -1,5 +1,8 @@
 /**
- * Car
+ * Class which stores the information for individual vehicles for use in Need for Java.
+ * 
+ * @author Charlie Timlock
+ * @version ver1.0
  */
 public class Vehicle 
 {
@@ -23,10 +26,10 @@ public class Vehicle
 
     /**
      * Non-default constructor that creates an object of the class Vehicle.
-     * @param type
-     * @param boostSpeed
-     * @param tankSize
-     * @param hitPoints
+     * @param type The vehicle type/name.
+     * @param boostSpeed The boost speed of the vehicle.
+     * @param tankSize The maxiumum amount of fuel the vehicle can hold.
+     * @param hitPoints The maximum damage the vehicle can sustain.
      */
     public Vehicle(String type, int boostSpeed, int tankSize, int hitPoints)
     {
@@ -46,7 +49,8 @@ public class Vehicle
     }
 
     /**
-     * @return the fileName
+     * Accessor method for the name of the file that stores the vehicle information.
+     * @return The file name, as a String.
      */
     public String getFileName() 
     {
@@ -81,6 +85,11 @@ public class Vehicle
         return type;
     }
 
+    /**
+     * Method that multiplies the size of the vehicle's maximum fuel by a given number.
+     * A value of less than one will reduce the maximum fuel (e.g tank size multiplied by 0.5 will be halved.)
+     * @param multiplier The multiplier to be applied, as a Double.
+     */
     public void multiplyTankSize(double multiplier)
     {
         this.tankSize *= multiplier;
@@ -120,5 +129,19 @@ public class Vehicle
     public void setType(String type) 
     {
         this.type = type;
+    }
+
+    /**
+     * Method that provides the current state of the object as a String.
+     * @return Returns the type, boost speed, tank size, and hit points as a String.
+     */
+    public String toString()
+    {
+        String output = "";
+        output += "Type: " + type;
+        output += " Boost Speed: " + boostSpeed;
+        output += " Tank Size: " + tankSize;
+        output += " Hit Points: " + hitPoints;
+        return output;
     }
 }
