@@ -1,9 +1,13 @@
 import java.util.Scanner;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 /**
- * FileIO
+ * Class which reads and writes to files.
+ * 
+ * @author Charlie Timlock
+ * @version ver1.0
  */
 public class FileIO 
 {
@@ -28,7 +32,13 @@ public class FileIO
         return fileName;
     }
 
+    /**
+     * Method which reads a specified file and returns the contents, delmited per line with a tilde ("~").
+     * @return Returns the contents of the file as a String.
+     * @throws IOException
+     */
     public String readFile()
+    throws IOException
     {
         String output = "";
         try 
@@ -45,8 +55,8 @@ public class FileIO
             } 
             catch (Exception e) 
             {
-                System.out.println("Error, file could not be read.");
-            } 
+                throw e;
+            }
             finally 
             {
                 try 
@@ -56,32 +66,41 @@ public class FileIO
                 } 
                 catch (Exception e) 
                 {
-                    System.out.println("Error, file did not close correctly.");
+                    throw e;
                 }
             }
         } 
-        catch (Exception e) 
+        catch (IOException e) 
         {
-            System.out.println("Error, file could not be accessed.");
+            throw e;
         }
         return output;
     }
 
+    /**
+     * Mutator method to set the name of the file to be accessed.
+     * @param fileName The file name, as a String.
+     */
     public void setFileName(String fileName)
     {
         this.fileName = fileName;
     }
 
-    public void writeFile(String inputString) 
+    /**
+     * Method which accepts a string, and appends it to a file.
+     * @param inputString The string to be appended.
+     * @throws IOException
+     */
+    public void appendFile(String inputString)
+    throws IOException
     {
         try (FileWriter writer = new FileWriter(fileName, true))
         {
-            //writer.write(inputString);
             writer.append(inputString);
         }
         catch (Exception e)
         {
-            System.out.println("Error, could not write to file.");
+            throw e;
         }
     }
 }
