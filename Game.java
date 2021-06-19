@@ -43,7 +43,6 @@ public class Game
         int lengthMax = 0;
         double fuelLimiter = 0.0;
         int obstacles = 0;
-        String choice = "";
 
         switch (difficulty) 
         {
@@ -52,7 +51,6 @@ public class Game
                 lengthMax = 15;
                 fuelLimiter = 1.0;
                 obstacles = 12;
-                choice = "Easy";
                 break;
 
             case 2:
@@ -60,7 +58,6 @@ public class Game
                 lengthMax = 30;
                 fuelLimiter = 0.8;
                 obstacles = 24;
-                choice = "Moderate";
                 break;
 
             case 3:
@@ -68,7 +65,6 @@ public class Game
                 lengthMax = 50;
                 fuelLimiter = 0.5;
                 obstacles = 45;
-                choice = "Hard";
                 break;
         
             default:
