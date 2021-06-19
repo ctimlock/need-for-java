@@ -30,17 +30,7 @@ public class Input
     }
 
     /**
-     * Method to request and pass back a user input as a Double.
-     * @return Returns the user's entered string as a Double.
-     */
-    public static double acceptDoubleInput()
-    {
-        Scanner console = new Scanner(System.in);
-        return Double.parseDouble(console.nextLine());
-    }
-
-    /**
-     * Method to get user to press enter.
+     * Method to get user to press enter to proceed.
      */
     public static void acceptEmptyInput()
     {
@@ -53,6 +43,7 @@ public class Input
      * @return Returns the user's entered string as an Integer.
      */
     public static int acceptIntegerInput()
+    throws NumberFormatException
     {
         Scanner console = new Scanner(System.in);
         return Integer.parseInt(console.nextLine());
