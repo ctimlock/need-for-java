@@ -260,7 +260,7 @@ public class Game
         if (this.player.getPosition() >= this.highway.getLength())
         {
             String outcome = this.player.getName() + " drove " + this.highway.getLength();
-            outcome += " kilometers in their " + this.player.getVehicle().getType();
+            outcome += " kilometers with their " + this.player.getVehicle().getType();
             outcome += " to outrun the cops, and made it across the border.";
             this.player.setFlavourText(outcome);
             return true;

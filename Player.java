@@ -56,7 +56,7 @@ public class Player
      */
     public void changeDamage(int damageChange)
     {
-        this.damage += damage;
+        this.damage += damageChange;
     }
 
     /**
